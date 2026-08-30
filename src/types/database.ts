@@ -1,4 +1,11 @@
-import { users, roles, permissions, sessions, auditLogs, settings } from "@/server/db/schema";
+import {
+  type users,
+  type roles,
+  type permissions,
+  type sessions,
+  type auditLogs,
+  type settings,
+} from "@/server/db/schema";
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;

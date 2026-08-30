@@ -5,3 +5,7 @@ build
 data
 coverage
 playwright-report
+test-results
+drizzle
+.turbo
+tsconfig.tsbuildinfo
