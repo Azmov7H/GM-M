@@ -4,7 +4,7 @@ Local-First Inventory & POS Management System.
 
 ## Stack
 
-- **Runtime:** Node.js 24 LTS
+- **Runtime:** Node.js 22 LTS
 - **Framework:** Next.js 16 + React 19
 - **Language:** TypeScript (strict)
 - **UI:** Tailwind CSS + shadcn/ui + Radix UI
@@ -16,7 +16,7 @@ Local-First Inventory & POS Management System.
 
 ## Requirements
 
-- Node.js 24 LTS
+- Node.js 22 LTS (use `nvm use` or `nvm install` — see `.nvmrc`)
 - npm
 - Git
 
@@ -43,23 +43,24 @@ npm run start
 
 ## Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint issues |
-| `npm run format` | Format with Prettier |
-| `npm run format:check` | Check Prettier formatting |
-| `npm run typecheck` | Run TypeScript compiler |
-| `npm run test` | Run Vitest tests |
-| `npm run test:watch` | Run Vitest in watch mode |
-| `npm run test:e2e` | Run Playwright tests |
-| `npm run db:generate` | Generate Drizzle migrations |
-| `npm run db:migrate` | Run Drizzle migrations |
-| `npm run db:studio` | Open Drizzle Studio |
-| `npm run db:push` | Push schema to database |
+| Script                 | Description                     |
+| ---------------------- | ------------------------------- |
+| `npm run dev`          | Start development server        |
+| `npm run build`        | Build for production            |
+| `npm run start`        | Start production server         |
+| `npm run lint`         | Run ESLint                      |
+| `npm run lint:fix`     | Fix ESLint issues               |
+| `npm run format`       | Format with Prettier            |
+| `npm run format:check` | Check Prettier formatting       |
+| `npm run typecheck`    | Run TypeScript compiler         |
+| `npm run test`         | Run Vitest tests                |
+| `npm run test:watch`   | Run Vitest in watch mode        |
+| `npm run test:e2e`     | Run Playwright tests            |
+| `npm run db:generate`  | Generate Drizzle migrations     |
+| `npm run db:migrate`   | Run Drizzle migrations          |
+| `npm run db:studio`    | Open Drizzle Studio             |
+| `npm run db:push`      | Push schema to database         |
+| `npm run db:seed`      | Seed database with initial data |
 
 ## Database
 
@@ -71,4 +72,4 @@ Copy `.env.example` to `.env.local` and configure as needed.
 
 ## Architecture
 
-See `docs/architecture.md` for detailed architecture documentation.
+See `docs/04-architecture/` for detailed architecture documentation.
