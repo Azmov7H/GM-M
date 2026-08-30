@@ -66,27 +66,27 @@
 
 **Tasks:**
 
-- TASK-INFRA-001: Fix vitest/bus error on AMD hardware
-- TASK-INFRA-002: Verify Next.js build works (try Node.js 22)
-- TASK-INFRA-003: Verify `npm run dev` serves pages
-- TASK-INFRA-004: Set up ESLint with strict rules
-- TASK-INFRA-005: Set up Prettier with RTL-aware config
-- TASK-INFRA-006: Set up Vitest with proper configuration
-- TASK-INFRA-007: Set up Playwright configuration
-- TASK-INFRA-008: Create root error boundaries (error.tsx, not-found.tsx)
-- TASK-INFRA-009: Create loading.tsx templates
-- TASK-INFRA-010: Set up GitHub Actions CI
-- TASK-INFRA-011: Create seed script for demo data
-- TASK-INFRA-012: Create Arabic font integration (IBM Plex Sans Arabic)
+- [x] TASK-INFRA-001: Fix vitest/bus error on AMD hardware
+- [x] TASK-INFRA-002: Verify Next.js build works (try Node.js 22)
+- [x] TASK-INFRA-003: Verify `npm run dev` serves pages
+- [x] TASK-INFRA-004: Set up ESLint with strict rules
+- [x] TASK-INFRA-005: Set up Prettier with RTL-aware config
+- [x] TASK-INFRA-006: Set up Vitest with proper configuration
+- [x] TASK-INFRA-007: Set up Playwright configuration
+- [x] TASK-INFRA-008: Create root error boundaries (error.tsx, not-found.tsx)
+- [x] TASK-INFRA-009: Create loading.tsx templates
+- [x] TASK-INFRA-010: Set up GitHub Actions CI
+- [x] TASK-INFRA-011: Create seed script for demo data
+- [x] TASK-INFRA-012: Create Arabic font integration (IBM Plex Sans Arabic)
 
 **Exit Criteria:**
 
-- `npm run dev` works
-- `npm run lint` passes
-- `npm run typecheck` passes
-- `npm run test` passes
-- Error boundaries in place
-- CI pipeline green
+- [x] `npm run dev` works
+- [x] `npm run lint` passes
+- [x] `npm run typecheck` passes
+- [x] `npm run test` passes
+- [x] Error boundaries in place
+- [x] CI pipeline green
 
 ---
 
@@ -96,27 +96,27 @@
 
 **Tasks:**
 
-- TASK-UI-001: Implement root layout with Arabic RTL
-- TASK-UI-002: Implement sidebar navigation
-- TASK-UI-003: Implement header component
-- TASK-UI-004: Implement shadcn theme (colors, typography)
-- TASK-UI-005: Implement loading states (Skeleton)
-- TASK-UI-006: Implement empty states
-- TASK-UI-007: Implement error states
-- TASK-UI-008: Implement toast notification system
-- TASK-UI-009: Implement dialog system
-- TASK-UI-010: Implement form components
-- TASK-UI-011: Implement data table component
-- TASK-UI-012: Implement search input component
-- TASK-UI-013: Implement breadcrumb navigation
-- TASK-UI-014: Implement command palette (Ctrl+K)
+- [x] TASK-UI-001: Implement root layout with Arabic RTL
+- [x] TASK-UI-002: Implement sidebar navigation
+- [x] TASK-UI-003: Implement header component
+- [x] TASK-UI-004: Implement shadcn theme (colors, typography)
+- [x] TASK-UI-005: Implement loading states (Skeleton)
+- [x] TASK-UI-006: Implement empty states
+- [x] TASK-UI-007: Implement error states
+- [x] TASK-UI-008: Implement toast notification system
+- [x] TASK-UI-009: Implement dialog system
+- [x] TASK-UI-010: Implement form components
+- [x] TASK-UI-011: Implement data table component
+- [x] TASK-UI-012: Implement search input component
+- [x] TASK-UI-013: Implement breadcrumb navigation
+- [x] TASK-UI-014: Implement command palette (Ctrl+K)
 
 **Exit Criteria:**
 
-- All base UI components working
-- RTL layout verified
-- Navigation functional
-- Consistent design system
+- [x] All base UI components working
+- [x] RTL layout verified
+- [x] Navigation functional
+- [x] Consistent design system
 
 ---
 

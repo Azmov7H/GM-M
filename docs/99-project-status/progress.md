@@ -5,8 +5,8 @@
 | Phase | Status      | Start | End | Notes                  |
 | ----- | ----------- | ----- | --- | ---------------------- |
 | P0    | Complete    | —     | —   | Planning documentation |
-| P1    | Not Started | —     | —   | Infrastructure         |
-| P2    | Not Started | —     | —   | UX/UI                  |
+| P1    | Complete    | —     | —   | Infrastructure         |
+| P2    | In Progress | —     | —   | UX/UI                  |
 | P3    | Not Started | —     | —   | Database               |
 | P4    | Not Started | —     | —   | Auth                   |
 | P5    | Not Started | —     | —   | Inventory              |
