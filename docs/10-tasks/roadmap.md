@@ -126,21 +126,21 @@
 
 **Tasks:**
 
-- TASK-DB-001: Design complete Drizzle schema
-- TASK-DB-002: Create migration files
-- TASK-DB-003: Create database indexes
-- TASK-DB-004: Create seed script (roles, permissions, admin user)
-- TASK-DB-005: Create database helpers (test database, factories)
-- TASK-DB-006: Create repository base class
-- TASK-DB-007: Verify migrations work
-- TASK-DB-008: Verify seed data works
+- [x] TASK-DB-001: Design complete Drizzle schema
+- [x] TASK-DB-002: Create migration files
+- [x] TASK-DB-003: Create database indexes
+- [x] TASK-DB-004: Create seed script (roles, permissions, admin user)
+- [x] TASK-DB-005: Create database helpers (test database, factories)
+- [x] TASK-DB-006: Create repository base class
+- [x] TASK-DB-007: Verify migrations work
+- [x] TASK-DB-008: Verify seed data works
 
 **Exit Criteria:**
 
-- All tables created
-- Indexes in place
-- Seed data populates correctly
-- Migrations run cleanly
+- [x] All tables created
+- [x] Indexes in place
+- [x] Seed data populates correctly
+- [x] Migrations run cleanly
 
 ---
 

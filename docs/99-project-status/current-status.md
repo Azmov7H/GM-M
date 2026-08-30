@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 2 — UX/UI Design** (Implementation)
+**PHASE 3 — Database & Domain Model** (Implementation)
 
 ## Current Task
 
-TASK-UI-015: Phase 2 quality verification and handoff
+TASK-DB-008 complete. Phase 3 handed off; next phase is Phase 4 (Authentication & Authorization).
 
 ## Status Summary
 
@@ -15,9 +15,10 @@ TASK-UI-015: Phase 2 quality verification and handoff
 | Project scaffolding    | Complete    |
 | Planning documentation | Complete    |
 | Infrastructure (P1)    | Complete    |
-| UX/UI Design (P2)      | In Progress |
+| UX/UI Design (P2)      | Complete    |
+| Database & Domain (P3) | Complete    |
 | Implementation         | In Progress |
-| Testing                | Not Started |
+| Testing                | In Progress |
 | Deployment             | Not Started |
 
 ## Completed
@@ -57,11 +58,13 @@ TASK-UI-015: Phase 2 quality verification and handoff
 - [x] Data table, search input, breadcrumb, empty/error/loading states
 - [x] Command palette (Ctrl+K, cmdk)
 - [x] Dashboard placeholder page (design-system demo)
-
-## In Progress
-
-- [ ] Phase 2 quality gates final verification
-- [ ] Phase 2 commit + push to develop
+- [x] Complete Drizzle schema: 24 tables (foundation + business)
+- [x] Migration generated (drizzle/0000) and applied cleanly
+- [x] Database indexes (30) across frequently queried columns
+- [x] Seed extended with demo business data (units, categories, warehouses, products, customers, suppliers, stocks)
+- [x] Database helpers (test DB via in-memory + migrations, entity factories)
+- [x] Repository base class (generic CRUD via better-sqlite3 client)
+- [x] Phase 3 verified: migrations run, seed populates, quality gates green
 
 ## Blocked
 
@@ -71,9 +74,9 @@ TASK-UI-015: Phase 2 quality verification and handoff
 
 ## Next Task
 
-**TASK-UI-015: Phase 2 quality verification and handoff**
+**Phase 4 — Authentication & Authorization** (TASK-AUTH-001..012)
 
-Remaining Phase 2 verification: confirm RTL layout and navigation render correctly, mark the Phase 2 tasks complete, and commit/push to develop.
+Login page (username/password), session management (JWT + cookies), middleware, RBAC utilities, user CRUD (admin), role assignment, password hashing (bcrypt), logout, session refresh, login rate limiting, RoleGate component, password change.
 
 ## Known Risks
 
@@ -111,6 +114,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 0 documentation and proceed to Phase 1.**
-
-The first priority is resolving the hardware-specific build issues (bus error on AMD CPU) by testing with Node.js 22 LTS. If that resolves the issues, all other Phase 1 tasks can proceed normally.
+**Approve Phase 3 and proceed to Phase 4 (Authentication & Authorization).**

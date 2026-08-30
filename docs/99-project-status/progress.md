@@ -6,8 +6,8 @@
 | ----- | ----------- | ----- | --- | ---------------------- |
 | P0    | Complete    | —     | —   | Planning documentation |
 | P1    | Complete    | —     | —   | Infrastructure         |
-| P2    | In Progress | —     | —   | UX/UI                  |
-| P3    | Not Started | —     | —   | Database               |
+| P2    | Complete    | —     | —   | UX/UI                  |
+| P3    | Complete    | —     | —   | Database               |
 | P4    | Not Started | —     | —   | Auth                   |
 | P5    | Not Started | —     | —   | Inventory              |
 | P6    | Not Started | —     | —   | Sales & POS            |
@@ -41,7 +41,9 @@
 | Milestone                | Target  | Status   |
 | ------------------------ | ------- | -------- |
 | Planning Complete        | Current | Complete |
-| Infrastructure Working   | P1      | Pending  |
+| Infrastructure Working   | P1      | Complete |
+| UX/UI Design Complete    | P2      | Complete |
+| Database Working         | P3      | Complete |
 | Auth System Working      | P4      | Pending  |
 | Inventory System Working | P5      | Pending  |
 | POS System Working       | P6      | Pending  |

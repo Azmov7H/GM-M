@@ -7,6 +7,13 @@ import {
   userRoles,
   rolePermissions,
   settings,
+  categories,
+  units,
+  warehouses,
+  products,
+  customers,
+  suppliers,
+  stocks,
 } from "./schema";
 
 const ROLE_SEEDS: (typeof roles.$inferInsert)[] = [
@@ -252,12 +259,221 @@ export async function seedDatabase() {
     )
     .onConflictDoNothing();
 
+  await seedDemoData();
+
   console.log(`Seed complete. Seed a total of:`);
   console.log(`  - ${ROLE_SEEDS.length} roles`);
   console.log(`  - ${PERMISSION_SEEDS.length} permissions`);
   console.log(`  - ${rolePermValues.length} role-permission mappings`);
   console.log(`  - ${SETTING_SEEDS.length} settings`);
   console.log(`  - admin user (username: admin / password: admin123)`);
+}
+
+const UNIT_SEEDS = [
+  { id: "unit_piece", name: "قطعة", nameShort: "قطعة" },
+  { id: "unit_box", name: "صندوق", nameShort: "صندوق" },
+  { id: "unit_kg", name: "كيلوغرام", nameShort: "كجم" },
+  { id: "unit_liter", name: "لتر", nameShort: "لتر" },
+  { id: "unit_carton", name: "كرتونة", nameShort: "كرتونة" },
+];
+
+const WAREHOUSE_SEEDS = [
+  { id: "wh_main", name: "المستودع الرئيسي", code: "WH-01", isActive: true },
+  { id: "wh_shop", name: "المعرض", code: "SH-01", isActive: true },
+];
+
+const CATEGORY_SEEDS = [
+  { id: "cat_grocery", name: "مواد غذائية", parentId: null },
+  { id: "cat_beverages", name: "مشروبات", parentId: null },
+  { id: "cat_cleaning", name: "منظفات", parentId: null },
+  { id: "cat_snacks", name: "وجبات خفيفة", parentId: null },
+  { id: "cat_dairy", name: "ألبان", parentId: null },
+];
+
+const PRODUCT_SEEDS: (typeof products.$inferInsert)[] = [
+  {
+    id: "prod_rice",
+    name: "أرز بسمتي 5 كجم",
+    code: "P-0001",
+    categoryId: "cat_grocery",
+    unitId: "unit_box",
+    buyPrice: 32,
+    retailPrice: 39,
+    wholesalePrice: 36,
+    minLevel: 10,
+  },
+  {
+    id: "prod_sugar",
+    name: "سكر 1 كجم",
+    code: "P-0002",
+    categoryId: "cat_grocery",
+    unitId: "unit_box",
+    buyPrice: 5,
+    retailPrice: 7,
+    wholesalePrice: 6.5,
+    minLevel: 20,
+  },
+  {
+    id: "prod_oil",
+    name: "زيت دوار الشمس 1.5 لتر",
+    code: "P-0003",
+    categoryId: "cat_grocery",
+    unitId: "unit_box",
+    buyPrice: 14,
+    retailPrice: 18,
+    wholesalePrice: 17,
+    minLevel: 15,
+  },
+  {
+    id: "prod_water",
+    name: "مياه معدنية 1.5 لتر",
+    code: "P-0004",
+    categoryId: "cat_beverages",
+    unitId: "unit_carton",
+    buyPrice: 5,
+    retailPrice: 7,
+    wholesalePrice: 6,
+    minLevel: 30,
+  },
+  {
+    id: "prod_juice",
+    name: "عصير برتقال 1 لتر",
+    code: "P-0005",
+    categoryId: "cat_beverages",
+    unitId: "unit_carton",
+    buyPrice: 8,
+    retailPrice: 10,
+    wholesalePrice: 9,
+    minLevel: 20,
+  },
+  {
+    id: "prod_soda",
+    name: "مشروب غازي 330 مل",
+    code: "P-0006",
+    categoryId: "cat_beverages",
+    unitId: "unit_carton",
+    buyPrice: 1.5,
+    retailPrice: 2,
+    wholesalePrice: 1.8,
+    minLevel: 50,
+  },
+  {
+    id: "prod_detergent",
+    name: "مسحوق غسيل 3 كجم",
+    code: "P-0007",
+    categoryId: "cat_cleaning",
+    unitId: "unit_box",
+    buyPrice: 22,
+    retailPrice: 28,
+    wholesalePrice: 26,
+    minLevel: 10,
+  },
+  {
+    id: "prod_dishsoap",
+    name: "سائل غسيل أواني 1 لتر",
+    code: "P-0008",
+    categoryId: "cat_cleaning",
+    unitId: "unit_box",
+    buyPrice: 6,
+    retailPrice: 8,
+    wholesalePrice: 7,
+    minLevel: 15,
+  },
+  {
+    id: "prod_chips",
+    name: "شيبس 200 جم",
+    code: "P-0009",
+    categoryId: "cat_snacks",
+    unitId: "unit_box",
+    buyPrice: 3,
+    retailPrice: 4,
+    wholesalePrice: 3.5,
+    minLevel: 40,
+  },
+  {
+    id: "prod_chocolate",
+    name: "شوكولاتة 100 جم",
+    code: "P-0010",
+    categoryId: "cat_snacks",
+    unitId: "unit_box",
+    buyPrice: 4,
+    retailPrice: 5.5,
+    wholesalePrice: 5,
+    minLevel: 30,
+  },
+  {
+    id: "prod_milk",
+    name: "حليب طازج 1 لتر",
+    code: "P-0011",
+    categoryId: "cat_dairy",
+    unitId: "unit_box",
+    buyPrice: 6,
+    retailPrice: 7.5,
+    wholesalePrice: 7,
+    minLevel: 15,
+  },
+  {
+    id: "prod_yogurt",
+    name: "زبادي 1 كجم",
+    code: "P-0012",
+    categoryId: "cat_dairy",
+    unitId: "unit_box",
+    buyPrice: 5,
+    retailPrice: 6.5,
+    wholesalePrice: 6,
+    minLevel: 15,
+  },
+];
+
+const CUSTOMER_SEEDS = [
+  { id: "cust_trade1", name: "محل التوفيق", phone: "0550000001" },
+  { id: "cust_trade2", name: "بقالة النور", phone: "0550000002" },
+  { id: "cust_trade3", name: "سوبر ماركت الأمانة", phone: "0550000003" },
+];
+
+const SUPPLIER_SEEDS = [
+  { id: "supp_wholesale1", name: "المؤسسة الوطنية للمواد الغذائية", phone: "0110000001" },
+  { id: "supp_wholesale2", name: "شركة التوزيع الموحد", phone: "0110000002" },
+  { id: "supp_wholesale3", name: "مصنع الألبان الحديث", phone: "0110000003" },
+];
+
+async function seedDemoData() {
+  await db.insert(units).values(UNIT_SEEDS).onConflictDoNothing();
+
+  await db.insert(categories).values(CATEGORY_SEEDS).onConflictDoNothing();
+
+  await db.insert(warehouses).values(WAREHOUSE_SEEDS).onConflictDoNothing();
+
+  await db.insert(products).values(PRODUCT_SEEDS).onConflictDoNothing();
+
+  const stockInserts: (typeof stocks.$inferInsert)[] = [];
+  for (const product of PRODUCT_SEEDS) {
+    for (const warehouse of WAREHOUSE_SEEDS) {
+      stockInserts.push({
+        id: `stock_${randomUUID().slice(0, 8)}`,
+        productId: product.id!,
+        warehouseId: warehouse.id,
+        quantity: 60 + Math.floor(Math.random() * 200),
+      });
+    }
+  }
+  await db.insert(stocks).values(stockInserts).onConflictDoNothing();
+
+  const customerInserts: (typeof customers.$inferInsert)[] = CUSTOMER_SEEDS.map((c) => ({
+    ...c,
+    id: `customer_${randomUUID().slice(0, 8)}`,
+  }));
+  await db.insert(customers).values(customerInserts).onConflictDoNothing();
+
+  const supplierInserts: (typeof suppliers.$inferInsert)[] = SUPPLIER_SEEDS.map((s) => ({
+    ...s,
+    id: `supplier_${randomUUID().slice(0, 8)}`,
+  }));
+  await db.insert(suppliers).values(supplierInserts).onConflictDoNothing();
+
+  console.log(
+    `  - Demo data seeded (${UNIT_SEEDS.length} units, ${CATEGORY_SEEDS.length} categories, ${WAREHOUSE_SEEDS.length} warehouses, ${PRODUCT_SEEDS.length} products, ${stockInserts.length} stock records, ${CUSTOMER_SEEDS.length} customers, ${SUPPLIER_SEEDS.length} suppliers)`,
+  );
 }
 
 if (process.argv[1]?.endsWith("seed.ts")) {
