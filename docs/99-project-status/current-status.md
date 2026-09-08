@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 2 — UX/UI Design** (Implementation)
+**PHASE 4 — Authentication & Authorization** (Complete)
 
 ## Current Task
 
-TASK-UI-015: Phase 2 quality verification and handoff
+Phase 4 handed off; next phase is Phase 5 (Core Inventory).
 
 ## Status Summary
 
@@ -15,9 +15,11 @@ TASK-UI-015: Phase 2 quality verification and handoff
 | Project scaffolding    | Complete    |
 | Planning documentation | Complete    |
 | Infrastructure (P1)    | Complete    |
-| UX/UI Design (P2)      | In Progress |
+| UX/UI Design (P2)      | Complete    |
+| Database & Domain (P3) | Complete    |
+| Auth (P4)              | Complete    |
 | Implementation         | In Progress |
-| Testing                | Not Started |
+| Testing                | In Progress |
 | Deployment             | Not Started |
 
 ## Completed
@@ -57,11 +59,24 @@ TASK-UI-015: Phase 2 quality verification and handoff
 - [x] Data table, search input, breadcrumb, empty/error/loading states
 - [x] Command palette (Ctrl+K, cmdk)
 - [x] Dashboard placeholder page (design-system demo)
-
-## In Progress
-
-- [ ] Phase 2 quality gates final verification
-- [ ] Phase 2 commit + push to develop
+- [x] Complete Drizzle schema: 24 tables (foundation + business)
+- [x] Migration generated (drizzle/0000) and applied cleanly
+- [x] Database indexes (30) across frequently queried columns
+- [x] Seed extended with demo business data (units, categories, warehouses, products, customers, suppliers, stocks)
+- [x] Database helpers (test DB via in-memory + migrations, entity factories)
+- [x] Repository base class (generic CRUD via better-sqlite3 client)
+- [x] Phase 3 verified: migrations run, seed populates, quality gates green
+- [x] Password hashing with bcrypt (12 rounds); admin seed uses bcrypt
+- [x] JWT sessions (jose HS256) in HttpOnly SameSite=Strict cookies + DB tracking
+- [x] Auth proxy (Next.js 16): protects app + API, sliding refresh, login redirect
+- [x] Auth API: login/logout/session/change-password with zod validation
+- [x] Login page (RTL, react-hook-form) + logout menu + protected app layout
+- [x] Permission utilities + server RoleGate component
+- [x] Users API (CRUD, deactivate, reset-password, roles) with RBAC enforcement
+- [x] Users admin page (/system/users) + password page (/system/settings)
+- [x] Login rate limiting (5 attempts / 15 min, 429 + retryAfter)
+- [x] Phase 4 verified live: login/session/refresh/rate-limit/password-cycle/logout
+- [x] 36 tests passing (9 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -71,9 +86,9 @@ TASK-UI-015: Phase 2 quality verification and handoff
 
 ## Next Task
 
-**TASK-UI-015: Phase 2 quality verification and handoff**
+**Phase 5 — Core Inventory** (TASK-INV-001..015)
 
-Remaining Phase 2 verification: confirm RTL layout and navigation render correctly, mark the Phase 2 tasks complete, and commit/push to develop.
+Product CRUD, category/unit management, product search, stock tracking, movements, transfers (shop ↔ warehouse), adjustments, physical counting, product/stock/history pages and dialogs.
 
 ## Known Risks
 
@@ -111,6 +126,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 0 documentation and proceed to Phase 1.**
-
-The first priority is resolving the hardware-specific build issues (bus error on AMD CPU) by testing with Node.js 22 LTS. If that resolves the issues, all other Phase 1 tasks can proceed normally.
+**Approve Phase 4 and proceed to Phase 5 (Core Inventory).**

@@ -126,21 +126,21 @@
 
 **Tasks:**
 
-- TASK-DB-001: Design complete Drizzle schema
-- TASK-DB-002: Create migration files
-- TASK-DB-003: Create database indexes
-- TASK-DB-004: Create seed script (roles, permissions, admin user)
-- TASK-DB-005: Create database helpers (test database, factories)
-- TASK-DB-006: Create repository base class
-- TASK-DB-007: Verify migrations work
-- TASK-DB-008: Verify seed data works
+- [x] TASK-DB-001: Design complete Drizzle schema
+- [x] TASK-DB-002: Create migration files
+- [x] TASK-DB-003: Create database indexes
+- [x] TASK-DB-004: Create seed script (roles, permissions, admin user)
+- [x] TASK-DB-005: Create database helpers (test database, factories)
+- [x] TASK-DB-006: Create repository base class
+- [x] TASK-DB-007: Verify migrations work
+- [x] TASK-DB-008: Verify seed data works
 
 **Exit Criteria:**
 
-- All tables created
-- Indexes in place
-- Seed data populates correctly
-- Migrations run cleanly
+- [x] All tables created
+- [x] Indexes in place
+- [x] Seed data populates correctly
+- [x] Migrations run cleanly
 
 ---
 
@@ -150,25 +150,25 @@
 
 **Tasks:**
 
-- TASK-AUTH-001: Implement login page (username/password)
-- TASK-AUTH-002: Implement session management (JWT + cookies)
-- TASK-AUTH-003: Implement middleware (session verification)
-- TASK-AUTH-004: Implement permission checking utilities
-- TASK-AUTH-005: Implement user CRUD (admin only)
-- TASK-AUTH-006: Implement role assignment
-- TASK-AUTH-007: Implement password hashing (bcrypt)
-- TASK-AUTH-008: Implement logout
-- TASK-AUTH-009: Implement session refresh
-- TASK-AUTH-010: Implement login rate limiting
-- TASK-AUTH-011: Implement RoleGate component
-- TASK-AUTH-012: Implement password change
+- [x] TASK-AUTH-001: Implement login page (username/password)
+- [x] TASK-AUTH-002: Implement session management (JWT + cookies)
+- [x] TASK-AUTH-003: Implement middleware (session verification)
+- [x] TASK-AUTH-004: Implement permission checking utilities
+- [x] TASK-AUTH-005: Implement user CRUD (admin only)
+- [x] TASK-AUTH-006: Implement role assignment
+- [x] TASK-AUTH-007: Implement password hashing (bcrypt)
+- [x] TASK-AUTH-008: Implement logout
+- [x] TASK-AUTH-009: Implement session refresh
+- [x] TASK-AUTH-010: Implement login rate limiting
+- [x] TASK-AUTH-011: Implement RoleGate component
+- [x] TASK-AUTH-012: Implement password change
 
 **Exit Criteria:**
 
-- Login/logout working
-- Session management working
-- RBAC enforced server-side
-- All 5 roles functional
+- [x] Login/logout working
+- [x] Session management working
+- [x] RBAC enforced server-side
+- [x] All 5 roles functional
 
 ---
 

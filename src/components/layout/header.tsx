@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { openQuickSearch } from "@/components/layout/command-palette";
 import { SidebarCollapseToggle } from "@/components/layout/sidebar";
+import { UserMenu } from "@/components/auth/user-menu";
 import { Button } from "@/components/ui/button";
 
 export function Header({ className }: { className?: string }) {
@@ -43,6 +44,7 @@ export function Header({ className }: { className?: string }) {
       >
         <Search />
       </Button>
+      <UserMenu />
     </header>
   );
 }
