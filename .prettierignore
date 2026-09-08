@@ -9,3 +9,4 @@ test-results
 drizzle
 .turbo
 tsconfig.tsbuildinfo
+pnpm-lock.yaml

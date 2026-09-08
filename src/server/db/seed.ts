@@ -179,13 +179,9 @@ const SETTING_SEEDS = [
   },
 ];
 
-function hashPassword(password: string): string {
-  let hash = 0;
-  for (let i = 0; i < password.length; i++) {
-    hash = (hash << 5) - hash + password.charCodeAt(i);
-    hash |= 0;
-  }
-  return `sha256:${Buffer.from(String(Math.abs(hash))).toString("hex")}`;
+async function bcryptPassword(password: string): Promise<string> {
+  const { hash } = await import("bcryptjs");
+  return hash(password, 12);
 }
 
 export async function seedDatabase() {
@@ -233,7 +229,7 @@ export async function seedDatabase() {
       id: adminId,
       username: "admin",
       email: "admin@localhost",
-      passwordHash: hashPassword("admin123"),
+      passwordHash: await bcryptPassword("admin123"),
       displayName: "المدير العام",
       isActive: true,
     })

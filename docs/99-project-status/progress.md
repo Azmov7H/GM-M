@@ -8,7 +8,7 @@
 | P1    | Complete    | —     | —   | Infrastructure         |
 | P2    | Complete    | —     | —   | UX/UI                  |
 | P3    | Complete    | —     | —   | Database               |
-| P4    | Not Started | —     | —   | Auth                   |
+| P4    | Complete    | —     | —   | Auth                   |
 | P5    | Not Started | —     | —   | Inventory              |
 | P6    | Not Started | —     | —   | Sales & POS            |
 | P7    | Not Started | —     | —   | Purchasing             |
@@ -44,7 +44,7 @@
 | Infrastructure Working   | P1      | Complete |
 | UX/UI Design Complete    | P2      | Complete |
 | Database Working         | P3      | Complete |
-| Auth System Working      | P4      | Pending  |
+| Auth System Working      | P4      | Complete |
 | Inventory System Working | P5      | Pending  |
 | POS System Working       | P6      | Pending  |
 | All Features Working     | P9      | Pending  |
