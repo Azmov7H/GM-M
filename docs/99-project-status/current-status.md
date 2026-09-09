@@ -2,28 +2,29 @@
 
 ## Current Phase
 
-**PHASE 7 — Purchasing** (Complete)
+**PHASE 8 — Customers & Suppliers** (Complete)
 
 ## Current Task
 
-Phase 7 handed off; next phase is Phase 8 (Customers & Suppliers).
+Phase 8 handed off; next phase is Phase 9 (Reports & Dashboard).
 
 ## Status Summary
 
-| Category               | Status      |
-| ---------------------- | ----------- |
-| Project scaffolding    | Complete    |
-| Planning documentation | Complete    |
-| Infrastructure (P1)    | Complete    |
-| UX/UI Design (P2)      | Complete    |
-| Database & Domain (P3) | Complete    |
-| Auth (P4)              | Complete    |
-| Inventory (P5)         | Complete    |
-| Sales & POS (P6)       | Complete    |
-| Purchasing (P7)        | Complete    |
-| Implementation         | In Progress |
-| Testing                | In Progress |
-| Deployment             | Not Started |
+| Category                   | Status      |
+| -------------------------- | ----------- |
+| Project scaffolding        | Complete    |
+| Planning documentation     | Complete    |
+| Infrastructure (P1)        | Complete    |
+| UX/UI Design (P2)          | Complete    |
+| Database & Domain (P3)     | Complete    |
+| Auth (P4)                  | Complete    |
+| Inventory (P5)             | Complete    |
+| Sales & POS (P6)           | Complete    |
+| Purchasing (P7)            | Complete    |
+| Customers & Suppliers (P8) | Complete    |
+| Implementation             | In Progress |
+| Testing                    | In Progress |
+| Deployment                 | Not Started |
 
 ## Completed
 
@@ -101,6 +102,12 @@ Phase 7 handed off; next phase is Phase 8 (Customers & Suppliers).
 - [x] Minimal suppliers list API for PO creation (full CRUD stays Phase 8)
 - [x] Phase 7 verified live: create/receive/cancel cycles, RBAC 403s, cleanup done
 - [x] 63 tests passing (14 files); lint/typecheck/format/build green
+- [x] Customer/supplier full CRUD (deactivate guarded by zero balance)
+- [x] Detail pages with tabs (overview/transactions/payments) + payment dialogs
+- [x] Atomic payment recording (customer collection, supplier settlement) with over-pay guards
+- [x] Debt center (/finance/debts): receivables/payables/net + drill-down links
+- [x] Phase 8 verified live: CRUD/payment cycles, cashier/viewer RBAC 403s, POS intact
+- [x] 69 tests passing (15 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -110,9 +117,9 @@ Phase 7 handed off; next phase is Phase 8 (Customers & Suppliers).
 
 ## Next Task
 
-**Phase 8 — Customers & Suppliers** (TASK-CUST-001..006)
+**Phase 9 — Reports & Dashboard** (TASK-REP-001..008)
 
-Customer/supplier CRUD, detail pages, payment recording, debt center.
+Dashboard KPIs, sales/financial/profit-by-customer/price-history/shortage reports, date filtering, CSV export.
 
 ## Known Risks
 
@@ -150,4 +157,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 7 and proceed to Phase 8 (Customers & Suppliers).**
+**Approve Phase 8 and proceed to Phase 9 (Reports & Dashboard).**
