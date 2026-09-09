@@ -290,12 +290,30 @@ export const saleItems = sqliteTable(
       .notNull()
       .references(() => warehouses.id),
     isService: integer("is_service", { mode: "boolean" }).notNull().default(false),
+    returnedQuantity: integer("returned_quantity").notNull().default(0),
     createdAt: text("created_at").notNull().$defaultFn(iso),
   },
   (t) => [
     index("idx_sale_items_sale").on(t.saleId),
     index("idx_sale_items_product").on(t.productId),
   ],
+);
+
+export const saleReturns = sqliteTable(
+  "sale_returns",
+  {
+    id: text("id").primaryKey(),
+    saleId: text("sale_id")
+      .notNull()
+      .references(() => sales.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    reason: text("reason").notNull(),
+    total: real("total").notNull().default(0),
+    createdAt: text("created_at").notNull().$defaultFn(iso),
+  },
+  (t) => [index("idx_sale_returns_sale").on(t.saleId)],
 );
 
 export const purchases = sqliteTable(

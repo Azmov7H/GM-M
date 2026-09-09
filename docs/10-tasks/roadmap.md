@@ -178,29 +178,29 @@
 
 **Tasks:**
 
-- TASK-INV-001: Implement product CRUD (create, read, update, delete)
-- TASK-INV-002: Implement category management
-- TASK-INV-003: Implement unit management
-- TASK-INV-004: Implement product search
-- TASK-INV-005: Implement stock level tracking
-- TASK-INV-006: Implement stock movements
-- TASK-INV-007: Implement stock transfers (shop ↔ warehouse)
-- TASK-INV-008: Implement stock adjustment (physical audit)
-- TASK-INV-009: Implement physical inventory counting
-- TASK-INV-010: Implement product list page
-- TASK-INV-011: Implement product form (create/edit)
-- TASK-INV-012: Implement stock view page
-- TASK-INV-013: Implement movements history page
-- TASK-INV-014: Implement transfer dialog
-- TASK-INV-015: Implement adjustment dialog
+- [x] TASK-INV-001: Implement product CRUD (create, read, update, delete)
+- [x] TASK-INV-002: Implement category management
+- [x] TASK-INV-003: Implement unit management
+- [x] TASK-INV-004: Implement product search
+- [x] TASK-INV-005: Implement stock level tracking
+- [x] TASK-INV-006: Implement stock movements
+- [x] TASK-INV-007: Implement stock transfers (shop ↔ warehouse)
+- [x] TASK-INV-008: Implement stock adjustment (physical audit)
+- [x] TASK-INV-009: Implement physical inventory counting
+- [x] TASK-INV-010: Implement product list page
+- [x] TASK-INV-011: Implement product form (create/edit)
+- [x] TASK-INV-012: Implement stock view page
+- [x] TASK-INV-013: Implement movements history page
+- [x] TASK-INV-014: Implement transfer dialog
+- [x] TASK-INV-015: Implement adjustment dialog
 
 **Exit Criteria:**
 
-- Products CRUD working
-- Stock levels accurate
-- Transfers atomic
-- Movements logged
-- Physical inventory workflow complete
+- [x] Products CRUD working
+- [x] Stock levels accurate
+- [x] Transfers atomic
+- [x] Movements logged
+- [x] Physical inventory workflow complete
 
 ---
 
@@ -210,24 +210,24 @@
 
 **Tasks:**
 
-- TASK-SALE-001: Implement invoice creation service
-- TASK-SALE-002: Implement POS interface (search, cart, payment)
-- TASK-SALE-003: Implement invoice list page
-- TASK-SALE-004: Implement invoice detail page
-- TASK-SALE-005: Implement sales returns
-- TASK-SALE-006: Implement invoice printing (basic)
-- TASK-SALE-007: Implement sales statistics
-- TASK-SALE-008: Implement keyboard shortcuts for POS
-- TASK-SALE-009: Implement service items (no stock)
-- TASK-SALE-010: Implement custom pricing per item
-- TASK-SALE-011: Implement below-cost warning
+- [x] TASK-SALE-001: Implement invoice creation service
+- [x] TASK-SALE-002: Implement POS interface (search, cart, payment)
+- [x] TASK-SALE-003: Implement invoice list page
+- [x] TASK-SALE-004: Implement invoice detail page
+- [x] TASK-SALE-005: Implement sales returns
+- [x] TASK-SALE-006: Implement invoice printing (basic)
+- [x] TASK-SALE-007: Implement sales statistics
+- [x] TASK-SALE-008: Implement keyboard shortcuts for POS
+- [x] TASK-SALE-009: Implement service items (no stock)
+- [x] TASK-SALE-010: Implement custom pricing per item
+- [x] TASK-SALE-011: Implement below-cost warning
 
 **Exit Criteria:**
 
-- POS creates invoices correctly
-- Stock deducted on sale
-- Returns restore stock
-- Payment tracking working
+- [x] POS creates invoices correctly
+- [x] Stock deducted on sale
+- [x] Returns restore stock
+- [x] Payment tracking working
 
 ---
 
