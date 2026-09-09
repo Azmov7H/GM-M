@@ -278,20 +278,20 @@
 
 **Tasks:**
 
-- TASK-REP-001: Implement dashboard page
-- TASK-REP-002: Implement sales report
-- TASK-REP-003: Implement financial report
-- TASK-REP-004: Implement profit-by-customer report
-- TASK-REP-005: Implement price history report
-- TASK-REP-006: Implement shortage report
-- TASK-REP-007: Implement date range filtering
-- TASK-REP-008: Implement CSV export
+- [x] TASK-REP-001: Implement dashboard page
+- [x] TASK-REP-002: Implement sales report
+- [x] TASK-REP-003: Implement financial report
+- [x] TASK-REP-004: Implement profit-by-customer report
+- [x] TASK-REP-005: Implement price history report
+- [x] TASK-REP-006: Implement shortage report
+- [x] TASK-REP-007: Implement date range filtering
+- [x] TASK-REP-008: Implement CSV export
 
 **Exit Criteria:**
 
-- Dashboard shows KPIs
-- Reports generate correctly
-- Export working
+- [x] Dashboard shows KPIs
+- [x] Reports generate correctly
+- [x] Export working
 
 ---
 
