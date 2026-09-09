@@ -113,9 +113,10 @@ function ToastList() {
   });
 }
 
-function ToastProvider(props: ToastPrimitive.Provider.Props) {
+function ToastProvider({ children, ...props }: ToastPrimitive.Provider.Props) {
   return (
     <ToastPrimitive.Provider toastManager={toastManager} {...props}>
+      {children}
       <ToastViewport>
         <ToastList />
       </ToastViewport>
