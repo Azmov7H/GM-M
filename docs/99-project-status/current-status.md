@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 6 — Sales & POS** (Complete)
+**PHASE 7 — Purchasing** (Complete)
 
 ## Current Task
 
-Phase 6 handed off; next phase is Phase 7 (Purchasing).
+Phase 7 handed off; next phase is Phase 8 (Customers & Suppliers).
 
 ## Status Summary
 
@@ -20,6 +20,7 @@ Phase 6 handed off; next phase is Phase 7 (Purchasing).
 | Auth (P4)              | Complete    |
 | Inventory (P5)         | Complete    |
 | Sales & POS (P6)       | Complete    |
+| Purchasing (P7)        | Complete    |
 | Implementation         | In Progress |
 | Testing                | In Progress |
 | Deployment             | Not Started |
@@ -93,6 +94,13 @@ Phase 6 handed off; next phase is Phase 7 (Purchasing).
 - [x] Invoices list + detail + return dialog + print stylesheet
 - [x] Phase 6 verified live: full sale/return/cancel cycles, cashier RBAC 403s
 - [x] 57 tests passing (13 files); lint/typecheck/format/build green
+- [x] Atomic PO creation (sequential order numbers, supplier balance, audit)
+- [x] Partial/full receiving into wh_main + PURCHASE movements + auto-received status
+- [x] Cancel guards (no cancel when received/cancelled), over-receive clamping
+- [x] Purchase orders page (stats, filters, create dialog, receive dialog)
+- [x] Minimal suppliers list API for PO creation (full CRUD stays Phase 8)
+- [x] Phase 7 verified live: create/receive/cancel cycles, RBAC 403s, cleanup done
+- [x] 63 tests passing (14 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -102,9 +110,9 @@ Phase 6 handed off; next phase is Phase 7 (Purchasing).
 
 ## Next Task
 
-**Phase 7 — Purchasing** (TASK-PUR-001..005)
+**Phase 8 — Customers & Suppliers** (TASK-CUST-001..006)
 
-Purchase order creation, list/detail pages, stock receiving, status tracking (draft → submitted → received → cancelled).
+Customer/supplier CRUD, detail pages, payment recording, debt center.
 
 ## Known Risks
 
@@ -142,4 +150,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 6 and proceed to Phase 7 (Purchasing).**
+**Approve Phase 7 and proceed to Phase 8 (Customers & Suppliers).**
