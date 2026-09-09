@@ -257,18 +257,18 @@
 
 **Tasks:**
 
-- TASK-CUST-001: Implement customer CRUD
-- TASK-CUST-002: Implement customer detail page (tabs)
-- TASK-CUST-003: Implement customer payment recording
-- TASK-CUST-004: Implement supplier CRUD
-- TASK-CUST-005: Implement supplier payment recording
-- TASK-CUST-006: Implement debt center
+- [x] TASK-CUST-001: Implement customer CRUD
+- [x] TASK-CUST-002: Implement customer detail page (tabs)
+- [x] TASK-CUST-003: Implement customer payment recording
+- [x] TASK-CUST-004: Implement supplier CRUD
+- [x] TASK-CUST-005: Implement supplier payment recording
+- [x] TASK-CUST-006: Implement debt center
 
 **Exit Criteria:**
 
-- Customer/supplier CRUD working
-- Payments tracked
-- Balances accurate
+- [x] Customer/supplier CRUD working
+- [x] Payments tracked
+- [x] Balances accurate
 
 ---
 
