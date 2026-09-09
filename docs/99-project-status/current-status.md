@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 4 — Authentication & Authorization** (Complete)
+**PHASE 5 — Core Inventory** (Complete)
 
 ## Current Task
 
-Phase 4 handed off; next phase is Phase 5 (Core Inventory).
+Phase 5 handed off; next phase is Phase 6 (Sales & POS).
 
 ## Status Summary
 
@@ -18,6 +18,7 @@ Phase 4 handed off; next phase is Phase 5 (Core Inventory).
 | UX/UI Design (P2)      | Complete    |
 | Database & Domain (P3) | Complete    |
 | Auth (P4)              | Complete    |
+| Inventory (P5)         | Complete    |
 | Implementation         | In Progress |
 | Testing                | In Progress |
 | Deployment             | Not Started |
@@ -77,6 +78,12 @@ Phase 4 handed off; next phase is Phase 5 (Core Inventory).
 - [x] Login rate limiting (5 attempts / 15 min, 429 + retryAfter)
 - [x] Phase 4 verified live: login/session/refresh/rate-limit/password-cycle/logout
 - [x] 36 tests passing (9 files); lint/typecheck/format/build green
+- [x] Product CRUD + search + categories + units (services, API, UI tabs)
+- [x] Atomic stock transfers + adjustments with movement + audit logging
+- [x] Stock levels page (low-stock badges) + movements history with filters
+- [x] Physical inventory workflow (create → count → complete → approve → apply)
+- [x] Phase 5 verified live: CRUD, transfer, adjust, count cycle, viewer RBAC 403s
+- [x] 49 tests passing (12 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -86,9 +93,9 @@ Phase 4 handed off; next phase is Phase 5 (Core Inventory).
 
 ## Next Task
 
-**Phase 5 — Core Inventory** (TASK-INV-001..015)
+**Phase 6 — Sales & POS** (TASK-SALE-001..011)
 
-Product CRUD, category/unit management, product search, stock tracking, movements, transfers (shop ↔ warehouse), adjustments, physical counting, product/stock/history pages and dialogs.
+Invoice creation service, POS interface (search, cart, payment), invoice list/detail pages, sales returns, invoice printing, sales statistics, POS keyboard shortcuts, service items, custom pricing, below-cost warning.
 
 ## Known Risks
 
@@ -126,4 +133,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 4 and proceed to Phase 5 (Core Inventory).**
+**Approve Phase 5 and proceed to Phase 6 (Sales & POS).**

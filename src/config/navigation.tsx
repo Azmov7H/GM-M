@@ -1,6 +1,7 @@
 import {
   Boxes,
   ChartNoAxesCombined,
+  ClipboardList,
   CreditCard,
   FileText,
   LayoutDashboard,
@@ -91,6 +92,12 @@ export const navSections: NavSection[] = [
             href: "/inventory/movements",
             icon: ShoppingCart,
             keyword: "حركات المخزون",
+          },
+          {
+            title: "الجرد الفعلي",
+            href: "/inventory/counts",
+            icon: ClipboardList,
+            keyword: "الجرد الفعلي الجرد الميداني",
           },
           {
             title: "أوامر الشراء",
