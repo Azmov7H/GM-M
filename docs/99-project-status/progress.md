@@ -10,7 +10,7 @@
 | P3    | Complete    | —     | —   | Database               |
 | P4    | Complete    | —     | —   | Auth                   |
 | P5    | Complete    | —     | —   | Inventory              |
-| P6    | Not Started | —     | —   | Sales & POS            |
+| P6    | Complete    | —     | —   | Sales & POS            |
 | P7    | Not Started | —     | —   | Purchasing             |
 | P8    | Not Started | —     | —   | Customers & Suppliers  |
 | P9    | Not Started | —     | —   | Reports & Dashboard    |
@@ -46,6 +46,6 @@
 | Database Working         | P3      | Complete |
 | Auth System Working      | P4      | Complete |
 | Inventory System Working | P5      | Complete |
-| POS System Working       | P6      | Pending  |
+| POS System Working       | P6      | Complete |
 | All Features Working     | P9      | Pending  |
 | Production Ready         | P15     | Pending  |

@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 5 — Core Inventory** (Complete)
+**PHASE 6 — Sales & POS** (Complete)
 
 ## Current Task
 
-Phase 5 handed off; next phase is Phase 6 (Sales & POS).
+Phase 6 handed off; next phase is Phase 7 (Purchasing).
 
 ## Status Summary
 
@@ -19,6 +19,7 @@ Phase 5 handed off; next phase is Phase 6 (Sales & POS).
 | Database & Domain (P3) | Complete    |
 | Auth (P4)              | Complete    |
 | Inventory (P5)         | Complete    |
+| Sales & POS (P6)       | Complete    |
 | Implementation         | In Progress |
 | Testing                | In Progress |
 | Deployment             | Not Started |
@@ -84,6 +85,14 @@ Phase 5 handed off; next phase is Phase 6 (Sales & POS).
 - [x] Physical inventory workflow (create → count → complete → approve → apply)
 - [x] Phase 5 verified live: CRUD, transfer, adjust, count cycle, viewer RBAC 403s
 - [x] 49 tests passing (12 files); lint/typecheck/format/build green
+- [x] Migration 0001: sale_returns + sale_items.returned_quantity
+- [x] Atomic invoice creation (stock deduct, SALE movements, payments, balances)
+- [x] Below-cost gate (409 + confirm), service items, custom pricing, credit rules
+- [x] Returns (partial/full, BR-INV-005), cancel with restore, sales stats
+- [x] POS terminal (search, cart, service items, shortcuts F2/Enter/Ctrl+Enter)
+- [x] Invoices list + detail + return dialog + print stylesheet
+- [x] Phase 6 verified live: full sale/return/cancel cycles, cashier RBAC 403s
+- [x] 57 tests passing (13 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -93,9 +102,9 @@ Phase 5 handed off; next phase is Phase 6 (Sales & POS).
 
 ## Next Task
 
-**Phase 6 — Sales & POS** (TASK-SALE-001..011)
+**Phase 7 — Purchasing** (TASK-PUR-001..005)
 
-Invoice creation service, POS interface (search, cart, payment), invoice list/detail pages, sales returns, invoice printing, sales statistics, POS keyboard shortcuts, service items, custom pricing, below-cost warning.
+Purchase order creation, list/detail pages, stock receiving, status tracking (draft → submitted → received → cancelled).
 
 ## Known Risks
 
@@ -133,4 +142,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 5 and proceed to Phase 6 (Sales & POS).**
+**Approve Phase 6 and proceed to Phase 7 (Purchasing).**

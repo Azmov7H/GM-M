@@ -210,24 +210,24 @@
 
 **Tasks:**
 
-- TASK-SALE-001: Implement invoice creation service
-- TASK-SALE-002: Implement POS interface (search, cart, payment)
-- TASK-SALE-003: Implement invoice list page
-- TASK-SALE-004: Implement invoice detail page
-- TASK-SALE-005: Implement sales returns
-- TASK-SALE-006: Implement invoice printing (basic)
-- TASK-SALE-007: Implement sales statistics
-- TASK-SALE-008: Implement keyboard shortcuts for POS
-- TASK-SALE-009: Implement service items (no stock)
-- TASK-SALE-010: Implement custom pricing per item
-- TASK-SALE-011: Implement below-cost warning
+- [x] TASK-SALE-001: Implement invoice creation service
+- [x] TASK-SALE-002: Implement POS interface (search, cart, payment)
+- [x] TASK-SALE-003: Implement invoice list page
+- [x] TASK-SALE-004: Implement invoice detail page
+- [x] TASK-SALE-005: Implement sales returns
+- [x] TASK-SALE-006: Implement invoice printing (basic)
+- [x] TASK-SALE-007: Implement sales statistics
+- [x] TASK-SALE-008: Implement keyboard shortcuts for POS
+- [x] TASK-SALE-009: Implement service items (no stock)
+- [x] TASK-SALE-010: Implement custom pricing per item
+- [x] TASK-SALE-011: Implement below-cost warning
 
 **Exit Criteria:**
 
-- POS creates invoices correctly
-- Stock deducted on sale
-- Returns restore stock
-- Payment tracking working
+- [x] POS creates invoices correctly
+- [x] Stock deducted on sale
+- [x] Returns restore stock
+- [x] Payment tracking working
 
 ---
 

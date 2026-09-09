@@ -142,3 +142,17 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+@media print {
+  [data-slot="sidebar"],
+  [data-slot="header"] {
+    display: none !important;
+  }
+  [data-slot="app-shell"] > div {
+    min-width: 0;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
