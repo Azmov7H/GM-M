@@ -1,7 +1,11 @@
+import { redirect } from "next/navigation";
+import Link from "next/link";
+
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
-import { EmptyState } from "@/components/shared/empty-state";
+import { LowStockTable, RecentSalesTable } from "@/components/reports/dashboard-tables";
 import {
   Boxes,
   ChartNoAxesCombined,
@@ -11,14 +15,7 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import Link from "next/link";
-
-const stats = [
-  { title: "المنتجات", value: "—", icon: Package },
-  { title: "المخزون", value: "—", icon: Boxes },
-  { title: "مبيعات اليوم", value: "0", icon: ShoppingCart },
-  { title: "العملاء", value: "—", icon: Users },
-];
+import { getDashboard } from "@/server/services/report.service";
 
 const quickActions = [
   { title: "نقطة البيع", href: "/sales/pos", icon: Store, variant: "default" as const },
@@ -28,16 +25,47 @@ const quickActions = [
     icon: Package,
     variant: "outline" as const,
   },
-  { title: "المالية", href: "/finance", icon: Wallet, variant: "outline" as const },
+  { title: "المالية", href: "/finance/debts", icon: Wallet, variant: "outline" as const },
   {
     title: "التقارير",
-    href: "/reports",
+    href: "/reports/sales",
     icon: ChartNoAxesCombined,
     variant: "outline" as const,
   },
 ];
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+  const d = await getDashboard();
+
+  const stats = [
+    {
+      title: "مبيعات اليوم",
+      value: d.todayRevenue.toFixed(2),
+      sub: `${d.todaySalesCount} فاتورة`,
+      icon: ShoppingCart,
+    },
+    {
+      title: "إجمالي الإيراد",
+      value: d.totalRevenue.toFixed(2),
+      sub: `${d.totalSalesCount} فاتورة`,
+      icon: Wallet,
+    },
+    {
+      title: "المنتجات",
+      value: String(d.productCount),
+      sub: `${d.lowStockCount} ناقص`,
+      icon: Package,
+    },
+    {
+      title: "العملاء",
+      value: String(d.customerCount),
+      sub: `مستحق ${d.receivableTotal.toFixed(2)}`,
+      icon: Users,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -63,7 +91,10 @@ export default function DashboardPage() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-muted-foreground text-sm">{stat.title}</p>
-                  <p className="text-2xl font-semibold">{stat.value}</p>
+                  <p className="text-2xl font-semibold">
+                    <span dir="ltr">{stat.value}</span>
+                  </p>
+                  <p className="text-muted-foreground text-xs">{stat.sub}</p>
                 </div>
               </CardContent>
             </Card>
@@ -92,18 +123,27 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>أنشطة اليوم</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <EmptyState
-            icon={ChartNoAxesCombined}
-            title="لا توجد بيانات بعد"
-            description="ستظهر هنا المبيعات وحركات المخزون وأخر المستجدات عند بدء استخدام النظام."
-          />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>أحدث المبيعات</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RecentSalesTable rows={d.recentSales} />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Boxes className="size-4" />
+              نواقص المخزون ({d.lowStockCount})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <LowStockTable rows={d.lowStock} />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -166,6 +166,18 @@ export const navSections: NavSection[] = [
             keyword: "التقارير المالية",
           },
           {
+            title: "ربحية العملاء",
+            href: "/reports/profit-by-customer",
+            icon: Users,
+            keyword: "ربحية العملاء الربح الهامش",
+          },
+          {
+            title: "سجل الأسعار",
+            href: "/reports/price-history",
+            icon: FileText,
+            keyword: "سجل الأسعار تاريخ الأسعار",
+          },
+          {
             title: "النواقص",
             href: "/reports/shortage",
             icon: Boxes,

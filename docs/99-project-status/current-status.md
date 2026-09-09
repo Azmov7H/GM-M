@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 8 — Customers & Suppliers** (Complete)
+**PHASE 9 — Reports & Dashboard** (Complete)
 
 ## Current Task
 
-Phase 8 handed off; next phase is Phase 9 (Reports & Dashboard).
+Phase 9 handed off; next phase is Phase 10 (Backup / Restore / Import / Export).
 
 ## Status Summary
 
@@ -22,6 +22,7 @@ Phase 8 handed off; next phase is Phase 9 (Reports & Dashboard).
 | Sales & POS (P6)           | Complete    |
 | Purchasing (P7)            | Complete    |
 | Customers & Suppliers (P8) | Complete    |
+| Reports & Dashboard (P9)   | Complete    |
 | Implementation             | In Progress |
 | Testing                    | In Progress |
 | Deployment                 | Not Started |
@@ -108,6 +109,13 @@ Phase 8 handed off; next phase is Phase 9 (Reports & Dashboard).
 - [x] Debt center (/finance/debts): receivables/payables/net + drill-down links
 - [x] Phase 8 verified live: CRUD/payment cycles, cashier/viewer RBAC 403s, POS intact
 - [x] 69 tests passing (15 files); lint/typecheck/format/build green
+- [x] Dashboard upgraded to live KPIs (revenue, counts, receivables/payables, low stock, recent sales)
+- [x] Sales/financial/profit-by-customer reports with date-range filtering
+- [x] Price history (sale + purchase points) and shortage reports
+- [x] Client-side CSV export (BOM for Excel) on all reports
+- [x] Fixed server→client function-prop crash via dashboard-tables client boundary
+- [x] Phase 9 verified live incl. headless-browser render + RBAC, cleanup done
+- [x] 75 tests passing (16 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -117,9 +125,9 @@ Phase 8 handed off; next phase is Phase 9 (Reports & Dashboard).
 
 ## Next Task
 
-**Phase 9 — Reports & Dashboard** (TASK-REP-001..008)
+**Phase 10 — Backup / Restore / Import / Export** (TASK-BKUP-001..005)
 
-Dashboard KPIs, sales/financial/profit-by-customer/price-history/shortage reports, date filtering, CSV export.
+Backup creation/restore/list, CSV import/export.
 
 ## Known Risks
 
@@ -157,4 +165,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 8 and proceed to Phase 9 (Reports & Dashboard).**
+**Approve Phase 9 and proceed to Phase 10 (Backup / Restore / Import / Export).**

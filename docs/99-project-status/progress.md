@@ -13,7 +13,7 @@
 | P6    | Complete    | —     | —   | Sales & POS            |
 | P7    | Complete    | —     | —   | Purchasing             |
 | P8    | Complete    | —     | —   | Customers & Suppliers  |
-| P9    | Not Started | —     | —   | Reports & Dashboard    |
+| P9    | Complete    | —     | —   | Reports & Dashboard    |
 | P10   | Not Started | —     | —   | Backup/Restore         |
 | P11   | Not Started | —     | —   | Security               |
 | P12   | Not Started | —     | —   | Performance            |
