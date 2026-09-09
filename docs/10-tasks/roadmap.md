@@ -237,17 +237,17 @@
 
 **Tasks:**
 
-- TASK-PUR-001: Implement purchase order creation
-- TASK-PUR-002: Implement purchase order list
-- TASK-PUR-003: Implement purchase order detail
-- TASK-PUR-004: Implement stock receiving
-- TASK-PUR-005: Implement purchase status tracking
+- [x] TASK-PUR-001: Implement purchase order creation
+- [x] TASK-PUR-002: Implement purchase order list
+- [x] TASK-PUR-003: Implement purchase order detail
+- [x] TASK-PUR-004: Implement stock receiving
+- [x] TASK-PUR-005: Implement purchase status tracking
 
 **Exit Criteria:**
 
-- Purchase orders create correctly
-- Receiving adds to warehouse
-- Status tracking working
+- [x] Purchase orders create correctly
+- [x] Receiving adds to warehouse
+- [x] Status tracking working
 
 ---
 

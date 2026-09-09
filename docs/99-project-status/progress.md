@@ -11,7 +11,7 @@
 | P4    | Complete    | —     | —   | Auth                   |
 | P5    | Complete    | —     | —   | Inventory              |
 | P6    | Complete    | —     | —   | Sales & POS            |
-| P7    | Not Started | —     | —   | Purchasing             |
+| P7    | Complete    | —     | —   | Purchasing             |
 | P8    | Not Started | —     | —   | Customers & Suppliers  |
 | P9    | Not Started | —     | —   | Reports & Dashboard    |
 | P10   | Not Started | —     | —   | Backup/Restore         |
