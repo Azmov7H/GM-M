@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 11 — Security Hardening** (Complete)
+**PHASE 12 — Performance Optimization** (Complete)
 
 ## Current Task
 
-Phase 11 handed off; next phase is Phase 12 (Performance Optimization).
+Phase 12 handed off; next phase is Phase 13 (Testing & QA).
 
 ## Status Summary
 
@@ -25,6 +25,7 @@ Phase 11 handed off; next phase is Phase 12 (Performance Optimization).
 | Reports & Dashboard (P9)   | Complete    |
 | Backup / Restore (P10)     | Complete    |
 | Security Hardening (P11)   | Complete    |
+| Performance (P12)          | Complete    |
 | Implementation             | In Progress |
 | Testing                    | In Progress |
 | Deployment                 | Not Started |
@@ -128,6 +129,11 @@ Phase 11 handed off; next phase is Phase 12 (Performance Optimization).
 - [x] CSRF same-origin guard, LIKE-wildcard escaping, cookie flags verified
 - [x] Phase 11 verified live (escalation 403s, CSRF 403, rate-limit 429), cleanup done
 - [x] 95 tests passing (19 files); lint/typecheck/format/build green
+- [x] Dashboard/reports use SQL aggregates + range predicates (no full-table JS sums)
+- [x] Fixed sale/purchase full-table product fetch + per-item stock N+1 (inArray batching)
+- [x] Index-usage regression tests (EXPLAIN QUERY PLAN, 3 hot paths)
+- [x] Lighthouse desktop 95 (dashboard + POS), API timings measured, cleanup done
+- [x] 98 tests passing (20 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -137,9 +143,9 @@ Phase 11 handed off; next phase is Phase 12 (Performance Optimization).
 
 ## Next Task
 
-**Phase 12 — Performance Optimization** (TASK-PERF-001..006)
+**Phase 13 — Testing & QA** (TASK-TEST-001..008)
 
-Bundle size, query/memory/page-load/POS optimization, Lighthouse audit.
+Unit/integration/E2E/security/performance tests, accessibility, RTL, cross-browser.
 
 ## Known Risks
 
@@ -177,4 +183,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 11 and proceed to Phase 12 (Performance Optimization).**
+**Approve Phase 12 and proceed to Phase 13 (Testing & QA).**

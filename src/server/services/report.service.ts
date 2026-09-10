@@ -1,4 +1,5 @@
-import { asc, desc, eq, isNull } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNull, lt, ne, sql } from "drizzle-orm";
+import type { SQL, SQLWrapper } from "drizzle-orm";
 
 import { db } from "@/server/db";
 import {
@@ -19,56 +20,88 @@ export interface DateRange {
 }
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-function inRange(createdAt: string, range: DateRange) {
-  const day = createdAt.slice(0, 10);
-  if (range.from && DATE_RE.test(range.from) && day < range.from) return false;
-  if (range.to && DATE_RE.test(range.to) && day > range.to) return false;
-  return true;
+
+/**
+ * SQL date-range predicates on an ISO-text createdAt column. Filters in the
+ * database (index-backed) instead of fetching full tables into JS.
+ */
+function rangeConditions(column: SQLWrapper, range: DateRange): SQL<unknown>[] {
+  const conds: SQL<unknown>[] = [];
+  if (range.from && DATE_RE.test(range.from)) {
+    conds.push(gte(column, range.from));
+  }
+  if (range.to && DATE_RE.test(range.to)) {
+    const t = new Date(`${range.to}T00:00:00Z`).getTime();
+    if (Number.isFinite(t)) {
+      conds.push(lt(column, new Date(t + 24 * 60 * 60 * 1000).toISOString()));
+    }
+  }
+  return conds;
 }
 
 // ---------------------------------------------------------------- dashboard
 export async function getDashboard() {
-  const today = new Date().toISOString().slice(0, 10);
-  const [saleRows, levels, productRows, customerRows, custBalances, suppBalances] =
-    await Promise.all([
-      db
-        .select({
-          id: sales.id,
-          invoiceNumber: sales.invoiceNumber,
-          customerName: customers.name,
-          total: sales.total,
-          status: sales.status,
-          createdAt: sales.createdAt,
-        })
-        .from(sales)
-        .leftJoin(customers, eq(sales.customerId, customers.id))
-        .orderBy(desc(sales.invoiceNumber))
-        .limit(50),
-      getStockLevels(),
-      db.select({ id: products.id }).from(products).where(isNull(products.deletedAt)),
-      db.select({ id: customers.id }).from(customers).where(isNull(customers.deletedAt)),
-      db
-        .select({ balance: customers.balance })
-        .from(customers)
-        .where(isNull(customers.deletedAt)),
-      db
-        .select({ balance: suppliers.balance })
-        .from(suppliers)
-        .where(isNull(suppliers.deletedAt)),
-    ]);
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+  const validSale = ne(sales.status, "cancelled");
+  const revenueAgg = {
+    revenue: sql<number>`coalesce(sum(${sales.total}), 0)`,
+    count: sql<number>`count(*)`,
+  };
+  const balanceAgg = {
+    total: sql<number>`coalesce(sum(${customers.balance}), 0)`,
+  };
+  const payableAgg = {
+    total: sql<number>`coalesce(sum(${suppliers.balance}), 0)`,
+  };
+  const [
+    todayAgg,
+    totalAgg,
+    productCount,
+    customerCount,
+    recvAgg,
+    payAgg,
+    saleRows,
+    levels,
+  ] = await Promise.all([
+    db
+      .select(revenueAgg)
+      .from(sales)
+      .where(and(validSale, gte(sales.createdAt, today), lt(sales.createdAt, tomorrow))),
+    db.select(revenueAgg).from(sales).where(validSale),
+    db.$count(products, isNull(products.deletedAt)),
+    db.$count(customers, isNull(customers.deletedAt)),
+    db.select(balanceAgg).from(customers).where(isNull(customers.deletedAt)),
+    db.select(payableAgg).from(suppliers).where(isNull(suppliers.deletedAt)),
+    db
+      .select({
+        id: sales.id,
+        invoiceNumber: sales.invoiceNumber,
+        customerName: customers.name,
+        total: sales.total,
+        status: sales.status,
+        createdAt: sales.createdAt,
+      })
+      .from(sales)
+      .leftJoin(customers, eq(sales.customerId, customers.id))
+      .orderBy(desc(sales.invoiceNumber))
+      .limit(8),
+    getStockLevels(),
+  ]);
   const valid = saleRows.filter((r) => r.status !== "cancelled");
-  const todayRows = valid.filter((r) => r.createdAt.slice(0, 10) === today);
-  const sum = (rs: { total: number }[]) => rs.reduce((s, r) => s + r.total, 0);
   const low = levels.filter((l) => l.isLow);
   return {
-    todayRevenue: sum(todayRows),
-    todaySalesCount: todayRows.length,
-    totalRevenue: sum(valid),
-    totalSalesCount: valid.length,
-    productCount: productRows.length,
-    customerCount: customerRows.length,
-    receivableTotal: custBalances.reduce((s, r) => s + (r.balance ?? 0), 0),
-    payableTotal: suppBalances.reduce((s, r) => s + (r.balance ?? 0), 0),
+    todayRevenue: todayAgg[0]?.revenue ?? 0,
+    todaySalesCount: todayAgg[0]?.count ?? 0,
+    totalRevenue: totalAgg[0]?.revenue ?? 0,
+    totalSalesCount: totalAgg[0]?.count ?? 0,
+    productCount,
+    customerCount,
+    receivableTotal: recvAgg[0]?.total ?? 0,
+    payableTotal: payAgg[0]?.total ?? 0,
     lowStockCount: low.length,
     recentSales: valid.slice(0, 8),
     lowStock: low.slice(0, 8),
@@ -94,11 +127,10 @@ export async function getSalesReport(range: DateRange = {}) {
     })
     .from(sales)
     .leftJoin(customers, eq(sales.customerId, customers.id))
+    .where(and(ne(sales.status, "cancelled"), ...rangeConditions(sales.createdAt, range)))
     .orderBy(desc(sales.invoiceNumber))
     .limit(1000);
-  const valid = rows.filter(
-    (r) => r.status !== "cancelled" && inRange(r.createdAt, range),
-  );
+  const valid = rows;
   const revenue = valid.reduce((s, r) => s + r.total, 0);
   return {
     rows: valid,
@@ -110,35 +142,41 @@ export async function getSalesReport(range: DateRange = {}) {
 
 // ---------------------------------------------------------------- financial
 export async function getFinancialReport(range: DateRange = {}) {
-  const [saleRows, purchaseRows, paymentRows, custBalances, suppBalances] =
-    await Promise.all([
-      db
-        .select({ total: sales.total, status: sales.status, createdAt: sales.createdAt })
-        .from(sales),
-      db
-        .select({
-          total: purchases.total,
-          status: purchases.status,
-          createdAt: purchases.createdAt,
-        })
-        .from(purchases),
-      db.select().from(payments).orderBy(desc(payments.createdAt)).limit(1000),
-      db
-        .select({ balance: customers.balance })
-        .from(customers)
-        .where(isNull(customers.deletedAt)),
-      db
-        .select({ balance: suppliers.balance })
-        .from(suppliers)
-        .where(isNull(suppliers.deletedAt)),
-    ]);
-  const revenue = saleRows
-    .filter((r) => r.status !== "cancelled" && inRange(r.createdAt, range))
-    .reduce((s, r) => s + r.total, 0);
-  const costs = purchaseRows
-    .filter((r) => r.status !== "cancelled" && inRange(r.createdAt, range))
-    .reduce((s, r) => s + r.total, 0);
-  const inRangePayments = paymentRows.filter((p) => inRange(p.createdAt, range));
+  const saleConds = [
+    ne(sales.status, "cancelled"),
+    ...rangeConditions(sales.createdAt, range),
+  ];
+  const purchaseConds = [
+    ne(purchases.status, "cancelled"),
+    ...rangeConditions(purchases.createdAt, range),
+  ];
+  const [saleAgg, purchaseAgg, paymentRows, recvAgg, payAgg] = await Promise.all([
+    db
+      .select({ total: sql<number>`coalesce(sum(${sales.total}), 0)` })
+      .from(sales)
+      .where(and(...saleConds)),
+    db
+      .select({ total: sql<number>`coalesce(sum(${purchases.total}), 0)` })
+      .from(purchases)
+      .where(and(...purchaseConds)),
+    db
+      .select()
+      .from(payments)
+      .where(and(...rangeConditions(payments.createdAt, range)))
+      .orderBy(desc(payments.createdAt))
+      .limit(1000),
+    db
+      .select({ total: sql<number>`coalesce(sum(${customers.balance}), 0)` })
+      .from(customers)
+      .where(isNull(customers.deletedAt)),
+    db
+      .select({ total: sql<number>`coalesce(sum(${suppliers.balance}), 0)` })
+      .from(suppliers)
+      .where(isNull(suppliers.deletedAt)),
+  ]);
+  const revenue = saleAgg[0]?.total ?? 0;
+  const costs = purchaseAgg[0]?.total ?? 0;
+  const inRangePayments = paymentRows;
   const collections = inRangePayments
     .filter((p) => p.entityType === "customer")
     .reduce((s, p) => s + p.amount, 0);
@@ -151,8 +189,8 @@ export async function getFinancialReport(range: DateRange = {}) {
     gross: revenue - costs,
     collections,
     settlements,
-    receivableTotal: custBalances.reduce((s, r) => s + (r.balance ?? 0), 0),
-    payableTotal: suppBalances.reduce((s, r) => s + (r.balance ?? 0), 0),
+    receivableTotal: recvAgg[0]?.total ?? 0,
+    payableTotal: payAgg[0]?.total ?? 0,
     payments: inRangePayments.slice(0, 200),
   };
 }
@@ -169,18 +207,24 @@ export interface CustomerProfitRow {
 }
 
 export async function getProfitByCustomer(range: DateRange = {}) {
-  const [saleRows, itemRows, productRows] = await Promise.all([
-    db
-      .select({
-        id: sales.id,
-        customerId: sales.customerId,
-        customerName: customers.name,
-        status: sales.status,
-        createdAt: sales.createdAt,
-      })
-      .from(sales)
-      .leftJoin(customers, eq(sales.customerId, customers.id)),
-    db.select().from(saleItems),
+  const saleRows = await db
+    .select({
+      id: sales.id,
+      customerId: sales.customerId,
+      customerName: customers.name,
+      status: sales.status,
+      createdAt: sales.createdAt,
+    })
+    .from(sales)
+    .leftJoin(customers, eq(sales.customerId, customers.id))
+    .where(
+      and(ne(sales.status, "cancelled"), ...rangeConditions(sales.createdAt, range)),
+    );
+  const saleIds = saleRows.map((s) => s.id);
+  const [itemRows, productRows] = await Promise.all([
+    saleIds.length > 0
+      ? db.select().from(saleItems).where(inArray(saleItems.saleId, saleIds))
+      : [],
     db.select({ id: products.id, buyPrice: products.buyPrice }).from(products),
   ]);
   const costByProduct = new Map(productRows.map((p) => [p.id, p.buyPrice ?? 0]));
@@ -192,7 +236,6 @@ export async function getProfitByCustomer(range: DateRange = {}) {
   }
   const byCustomer = new Map<string, CustomerProfitRow>();
   for (const s of saleRows) {
-    if (s.status === "cancelled" || !inRange(s.createdAt, range)) continue;
     const key = s.customerId ?? "__cash__";
     let row = byCustomer.get(key);
     if (!row) {
