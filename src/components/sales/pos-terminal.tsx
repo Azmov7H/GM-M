@@ -434,12 +434,12 @@ export function PosTerminal({
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
-              <Label>المخزن</Label>
+              <Label htmlFor="pos-warehouse">المخزن</Label>
               <Select
                 value={warehouseId}
                 onValueChange={(v) => setWarehouseId(v ?? defaultWarehouseId)}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="pos-warehouse" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -452,12 +452,12 @@ export function PosTerminal({
               </Select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label>العميل (اختياري — مطلوب للآجل)</Label>
+              <Label htmlFor="pos-customer">العميل (اختياري — مطلوب للآجل)</Label>
               <Select
                 value={customerId}
                 onValueChange={(v) => setCustomerId(v ?? NO_CUSTOMER)}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="pos-customer" className="w-full">
                   <SelectValue placeholder="عميل نقدي" />
                 </SelectTrigger>
                 <SelectContent>
@@ -471,12 +471,12 @@ export function PosTerminal({
               </Select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label>طريقة الدفع</Label>
+              <Label htmlFor="pos-payment">طريقة الدفع</Label>
               <Select
                 value={paymentType}
                 onValueChange={(v) => setPaymentType(v ?? "cash")}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="pos-payment" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

@@ -17,7 +17,7 @@
 | P10   | Complete    | —     | —   | Backup/Restore         |
 | P11   | Complete    | —     | —   | Security               |
 | P12   | Complete    | —     | —   | Performance            |
-| P13   | Not Started | —     | —   | Testing                |
+| P13   | Complete    | —     | —   | Testing                |
 | P14   | Not Started | —     | —   | Deployment             |
 | P15   | Not Started | —     | —   | Final Acceptance       |
 

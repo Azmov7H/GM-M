@@ -20,7 +20,7 @@ const createSaleSchema = z.object({
   tax: z.coerce.number().min(0).optional(),
   paymentType: z.enum(["cash", "credit", "bank", "wallet", "check"]),
   paidAmount: z.coerce.number().min(0).optional(),
-  notes: z.string().trim().optional().or(z.literal("")),
+  notes: z.string().trim().nullable().optional().or(z.literal("")),
   allowBelowCost: z.boolean().optional(),
 });
 

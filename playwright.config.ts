@@ -14,11 +14,23 @@ export default defineConfig({
     baseURL: BASE_URL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
+    launchOptions: process.env.PLAYWRIGHT_EXECUTABLE_PATH
+      ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH }
+      : undefined,
   },
   projects: [
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "firefox",
+      use: {
+        ...devices["Desktop Firefox"],
+        launchOptions: process.env.PLAYWRIGHT_FIREFOX_PATH
+          ? { executablePath: process.env.PLAYWRIGHT_FIREFOX_PATH }
+          : undefined,
+      },
     },
   ],
   webServer: {
