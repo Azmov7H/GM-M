@@ -2,35 +2,36 @@
 
 ## Current Phase
 
-**PHASE 14 — Local Deployment** (Complete)
+**PHASE 15 — Final Acceptance** (Complete)
 
 ## Current Task
 
-Phase 14 handed off; next phase is Phase 15 (Final Acceptance).
+All 15 phases complete. Project accepted — maintenance mode.
 
 ## Status Summary
 
-| Category                   | Status      |
-| -------------------------- | ----------- |
-| Project scaffolding        | Complete    |
-| Planning documentation     | Complete    |
-| Infrastructure (P1)        | Complete    |
-| UX/UI Design (P2)          | Complete    |
-| Database & Domain (P3)     | Complete    |
-| Auth (P4)                  | Complete    |
-| Inventory (P5)             | Complete    |
-| Sales & POS (P6)           | Complete    |
-| Purchasing (P7)            | Complete    |
-| Customers & Suppliers (P8) | Complete    |
-| Reports & Dashboard (P9)   | Complete    |
-| Backup / Restore (P10)     | Complete    |
-| Security Hardening (P11)   | Complete    |
-| Performance (P12)          | Complete    |
-| Testing & QA (P13)         | Complete    |
-| Local Deployment (P14)     | Complete    |
-| Implementation             | In Progress |
-| Testing                    | In Progress |
-| Deployment                 | Complete    |
+| Category                   | Status   |
+| -------------------------- | -------- |
+| Project scaffolding        | Complete |
+| Planning documentation     | Complete |
+| Infrastructure (P1)        | Complete |
+| UX/UI Design (P2)          | Complete |
+| Database & Domain (P3)     | Complete |
+| Auth (P4)                  | Complete |
+| Inventory (P5)             | Complete |
+| Sales & POS (P6)           | Complete |
+| Purchasing (P7)            | Complete |
+| Customers & Suppliers (P8) | Complete |
+| Reports & Dashboard (P9)   | Complete |
+| Backup / Restore (P10)     | Complete |
+| Security Hardening (P11)   | Complete |
+| Performance (P12)          | Complete |
+| Testing & QA (P13)         | Complete |
+| Local Deployment (P14)     | Complete |
+| Final Acceptance (P15)     | Complete |
+| Implementation             | Complete |
+| Testing                    | Complete |
+| Deployment                 | Complete |
 
 ## Completed
 
@@ -149,9 +150,8 @@ Phase 14 handed off; next phase is Phase 15 (Final Acceptance).
 
 ## Next Task
 
-**Phase 15 — Final Acceptance** (TASK-FINAL-001..004)
-
-Client demo, feedback bug fixes, final documentation review, repository cleanup.
+**Done.** All phases P1–P15 complete and accepted. See `client-demo.md` for
+the acceptance walkthrough and `docs/14-deployment/` for operations.
 
 ## Known Risks
 
@@ -189,4 +189,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 14 and proceed to Phase 15 (Final Acceptance).**
+**Project accepted — all 15 phases complete.**
