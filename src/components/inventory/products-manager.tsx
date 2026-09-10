@@ -55,6 +55,12 @@ async function api(path: string, init?: RequestInit) {
   return { ok: res.ok, error: data?.error ?? null };
 }
 
+export interface ImportErrorRow {
+  row: number;
+  code: string;
+  message: string;
+}
+
 export function ProductsManager({
   initialProducts,
   categories,
@@ -76,6 +82,9 @@ export function ProductsManager({
   const [notice, setNotice] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [createOpen, setCreateOpen] = React.useState(false);
+  const [importOpen, setImportOpen] = React.useState(false);
+  const [importing, setImporting] = React.useState(false);
+  const [importErrors, setImportErrors] = React.useState<ImportErrorRow[]>([]);
   const [editProduct, setEditProduct] = React.useState<ProductRow | null>(null);
   const [saving, setSaving] = React.useState(false);
 
@@ -141,6 +150,39 @@ export function ProductsManager({
     }
   };
 
+  const onImport = async (file: File) => {
+    setError(null);
+    setNotice(null);
+    setImportErrors([]);
+    setImporting(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/products/import", { method: "POST", body: form });
+      const data = (await res.json().catch(() => null)) as {
+        result?: {
+          total: number;
+          imported: number;
+          failed: number;
+          errors: ImportErrorRow[];
+        };
+        error?: string;
+      } | null;
+      if (!res.ok) {
+        setError(data?.error ?? "فشل استيراد الملف");
+        return;
+      }
+      const r = data?.result;
+      setImportErrors(r?.errors ?? []);
+      setNotice(
+        `تم استيراد ${r?.imported ?? 0} من ${r?.total ?? 0} (أخطاء: ${r?.failed ?? 0})`,
+      );
+      router.refresh();
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const onDelete = async (row: ProductRow) => {
     setError(null);
     setNotice(null);
@@ -179,7 +221,24 @@ export function ProductsManager({
             ))}
           </SelectContent>
         </Select>
-        <div className="ms-auto">
+        <div className="ms-auto flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => {
+              const a = document.createElement("a");
+              a.href = "/api/products/export";
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            }}
+          >
+            تصدير CSV
+          </Button>
+          {canCreate && (
+            <Button variant="outline" onClick={() => setImportOpen(true)}>
+              استيراد CSV
+            </Button>
+          )}
           {canCreate && <Button onClick={() => setCreateOpen(true)}>منتج جديد</Button>}
         </div>
       </div>
@@ -243,6 +302,41 @@ export function ProductsManager({
           },
         ]}
       />
+      <Dialog open={importOpen} onOpenChange={setImportOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>استيراد المنتجات من CSV</DialogTitle>
+            <DialogDescription>
+              الأعمدة: code, name, description, unit, category, buyPrice, retailPrice,
+              wholesalePrice, minLevel, isActive — الوحدة والفئة يجب أن تكونا موجودتين
+              مسبقاً.
+            </DialogDescription>
+          </DialogHeader>
+          <input
+            type="file"
+            accept=".csv,text/csv"
+            disabled={importing}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (file) void onImport(file);
+            }}
+          />
+          {importing && <p className="text-sm">جارٍ الاستيراد…</p>}
+          {importErrors.length > 0 && (
+            <DataTable<ImportErrorRow>
+              data={importErrors}
+              rowKey={(r) => `${r.row}-${r.code}`}
+              emptyTitle="لا أخطاء"
+              columns={[
+                { header: "السطر", cell: (r) => <span dir="ltr">{r.row}</span> },
+                { header: "الرمز", cell: (r) => r.code || "—" },
+                { header: "الخطأ", cell: (r) => r.message },
+              ]}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>

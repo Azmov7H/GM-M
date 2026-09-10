@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll, vi } from "vitest";
 
 import {
   signSessionToken,
   verifySessionToken,
+  invalidateAllSessions,
   SESSION_DURATION_SECONDS,
 } from "./session-token";
 
@@ -28,5 +29,23 @@ describe("session-token", () => {
   it("rejects an empty token", async () => {
     expect(await verifySessionToken("")).toBeNull();
     expect(await verifySessionToken("not-a-jwt")).toBeNull();
+  });
+
+  it("revokes pre-existing tokens after invalidateAllSessions", async () => {
+    try {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-09-10T00:00:00Z"));
+      const token = await signSessionToken("user_123");
+      expect(await verifySessionToken(token)).not.toBeNull();
+      vi.setSystemTime(new Date("2026-09-10T00:00:02Z"));
+      invalidateAllSessions();
+      expect(await verifySessionToken(token)).toBeNull();
+      // Tokens issued after the revocation stay valid.
+      const fresh = await signSessionToken("user_123");
+      expect(await verifySessionToken(fresh)).not.toBeNull();
+    } finally {
+      vi.useRealTimers();
+      invalidateAllSessions(0);
+    }
   });
 });

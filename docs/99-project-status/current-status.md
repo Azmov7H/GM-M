@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 9 — Reports & Dashboard** (Complete)
+**PHASE 10 — Backup / Restore / Import / Export** (Complete)
 
 ## Current Task
 
-Phase 9 handed off; next phase is Phase 10 (Backup / Restore / Import / Export).
+Phase 10 handed off; next phase is Phase 11 (Security Hardening).
 
 ## Status Summary
 
@@ -23,6 +23,7 @@ Phase 9 handed off; next phase is Phase 10 (Backup / Restore / Import / Export).
 | Purchasing (P7)            | Complete    |
 | Customers & Suppliers (P8) | Complete    |
 | Reports & Dashboard (P9)   | Complete    |
+| Backup / Restore (P10)     | Complete    |
 | Implementation             | In Progress |
 | Testing                    | In Progress |
 | Deployment                 | Not Started |
@@ -116,6 +117,12 @@ Phase 9 handed off; next phase is Phase 10 (Backup / Restore / Import / Export).
 - [x] Fixed server→client function-prop crash via dashboard-tables client boundary
 - [x] Phase 9 verified live incl. headless-browser render + RBAC, cleanup done
 - [x] 75 tests passing (16 files); lint/typecheck/format/build green
+- [x] Online backup creation (3/hour/user) + list + download (`backup:create`)
+- [x] Restore with integrity check, confirm gate, valid safety snapshot, session revocation
+- [x] Products CSV export (BOM) + import with per-row errors (`products:read/create`)
+- [x] Settings backup card (owner-gated) + products import/export UI
+- [x] Phase 10 verified live incl. restore round-trip + RBAC, cleanup done
+- [x] 87 tests passing (18 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -125,9 +132,9 @@ Phase 9 handed off; next phase is Phase 10 (Backup / Restore / Import / Export).
 
 ## Next Task
 
-**Phase 10 — Backup / Restore / Import / Export** (TASK-BKUP-001..005)
+**Phase 11 — Security Hardening** (TASK-SEC-001..008)
 
-Backup creation/restore/list, CSV import/export.
+Security review, auth bypass/escalation testing, input validation, XSS/CSRF, rate limits, audit completeness.
 
 ## Known Risks
 
@@ -165,4 +172,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 9 and proceed to Phase 10 (Backup / Restore / Import / Export).**
+**Approve Phase 10 and proceed to Phase 11 (Security Hardening).**
