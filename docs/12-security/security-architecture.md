@@ -159,19 +159,19 @@
 
 ### Pre-Deployment
 
-- [ ] All passwords hashed with bcrypt
-- [ ] JWT secrets are strong and unique
-- [ ] HttpOnly, Secure, SameSite=Strict on cookies
-- [ ] No sensitive data in client bundles
-- [ ] No sensitive data in logs
-- [ ] All inputs validated with Zod
-- [ ] Server-side RBAC enforced
-- [ ] SQL injection prevented (parameterized queries)
-- [ ] XSS prevented (React escaping)
-- [ ] CSRF protection active
-- [ ] Audit logging enabled
-- [ ] Backup system functional
-- [ ] Error messages don't leak internals
+- [x] All passwords hashed with bcrypt
+- [x] JWT secrets are strong and unique
+- [x] HttpOnly, Secure, SameSite=Strict on cookies
+- [x] No sensitive data in client bundles
+- [x] No sensitive data in logs
+- [x] All inputs validated with Zod
+- [x] Server-side RBAC enforced
+- [x] SQL injection prevented (parameterized queries)
+- [x] XSS prevented (React escaping)
+- [x] CSRF protection active
+- [x] Audit logging enabled
+- [x] Backup system functional
+- [x] Error messages don't leak internals
 
 ### Ongoing
 

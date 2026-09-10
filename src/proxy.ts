@@ -19,6 +19,21 @@ function isPublicPath(pathname: string): boolean {
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // CSRF defense-in-depth (SameSite=Strict is the primary control):
+  // state-changing API calls must originate from this host. Browsers always
+  // send Origin on POST/PUT/DELETE fetches; requests without any origin
+  // (curl, server-to-server) are allowed through.
+  if (
+    pathname.startsWith("/api") &&
+    req.method !== "GET" &&
+    req.method !== "HEAD" &&
+    req.method !== "OPTIONS" &&
+    !isSameOrigin(req)
+  ) {
+    return NextResponse.json({ error: "طلب مرفوض" }, { status: 403 });
+  }
+
   const token = req.cookies.get(SESSION_COOKIE_NAME)?.value ?? null;
   const payload = token ? await verifySessionToken(token) : null;
 
@@ -58,6 +73,27 @@ export async function proxy(req: NextRequest) {
   }
 
   return NextResponse.next();
+}
+
+function isSameOrigin(req: NextRequest): boolean {
+  const host = req.nextUrl.host;
+  const origin = req.headers.get("origin");
+  if (origin) {
+    try {
+      return new URL(origin).host === host;
+    } catch {
+      return false;
+    }
+  }
+  const referer = req.headers.get("referer");
+  if (referer) {
+    try {
+      return new URL(referer).host === host;
+    } catch {
+      return false;
+    }
+  }
+  return true;
 }
 
 export const config = {

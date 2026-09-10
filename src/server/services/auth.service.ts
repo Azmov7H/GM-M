@@ -77,7 +77,21 @@ export async function changePasswordForUser(
 export async function resetUserPassword(
   userId: string,
   newPassword: string,
-): Promise<void> {
+  actor?: { id: string; roles: string[] },
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const { getUserRoles } = await import("@/server/repositories/user-repository");
+  const { logAudit } = await import("./audit.service");
+  const targetRoles = await getUserRoles(userId);
+  if (targetRoles.includes("owner") && !actor?.roles.includes("owner")) {
+    return { ok: false, error: "لا يمكن إعادة تعيين كلمة مرور المالك" };
+  }
   const hashed = await hashPassword(newPassword);
   await db.update(users).set({ passwordHash: hashed }).where(eq(users.id, userId));
+  await logAudit({
+    userId: actor?.id,
+    action: "reset-password",
+    resource: "users",
+    resourceId: userId,
+  });
+  return { ok: true };
 }
