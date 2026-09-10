@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 12 — Performance Optimization** (Complete)
+**PHASE 13 — Testing & QA** (Complete)
 
 ## Current Task
 
-Phase 12 handed off; next phase is Phase 13 (Testing & QA).
+Phase 13 handed off; next phase is Phase 14 (Local Deployment).
 
 ## Status Summary
 
@@ -26,6 +26,7 @@ Phase 12 handed off; next phase is Phase 13 (Testing & QA).
 | Backup / Restore (P10)     | Complete    |
 | Security Hardening (P11)   | Complete    |
 | Performance (P12)          | Complete    |
+| Testing & QA (P13)         | Complete    |
 | Implementation             | In Progress |
 | Testing                    | In Progress |
 | Deployment                 | Not Started |
@@ -134,6 +135,10 @@ Phase 12 handed off; next phase is Phase 13 (Testing & QA).
 - [x] Index-usage regression tests (EXPLAIN QUERY PLAN, 3 hot paths)
 - [x] Lighthouse desktop 95 (dashboard + POS), API timings measured, cleanup done
 - [x] 98 tests passing (20 files); lint/typecheck/format/build green
+- [x] E2E suite (27 specs): auth, POS sale, purchase, backup, RBAC, a11y, RTL
+- [x] Cross-browser pass: chromium + firefox (54/54); services 82–100% covered
+- [x] Fixed POS notes:null rejection + unlabelled selects; cleanup done
+- [x] 102 tests passing (21 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -143,9 +148,9 @@ Phase 12 handed off; next phase is Phase 13 (Testing & QA).
 
 ## Next Task
 
-**Phase 13 — Testing & QA** (TASK-TEST-001..008)
+**Phase 14 — Local Deployment** (TASK-DEP-001..004)
 
-Unit/integration/E2E/security/performance tests, accessibility, RTL, cross-browser.
+Production build verification, deployment docs, user manual, troubleshooting guide.
 
 ## Known Risks
 
@@ -183,4 +188,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 12 and proceed to Phase 13 (Testing & QA).**
+**Approve Phase 13 and proceed to Phase 14 (Local Deployment).**
