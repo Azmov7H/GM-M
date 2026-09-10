@@ -18,7 +18,7 @@
 | P11   | Complete    | —     | —   | Security               |
 | P12   | Complete    | —     | —   | Performance            |
 | P13   | Complete    | —     | —   | Testing                |
-| P14   | Not Started | —     | —   | Deployment             |
+| P14   | Complete    | —     | —   | Deployment             |
 | P15   | Not Started | —     | —   | Final Acceptance       |
 
 ## Weekly Progress
