@@ -1,158 +1,144 @@
-# Local Deployment Plan
+# Local Deployment Guide
 
-## Prerequisites
+How to install and run alli-jamm in production on a local (on-premise) machine.
 
-- Node.js 22 LTS (nvm recommended)
-- npm (comes with Node.js)
-- Git (for cloning)
-- 4 GB RAM minimum
-- 500 MB disk space
+## 1. Prerequisites
 
-## Installation Steps
+| Requirement | Version / Detail                    |
+| ----------- | ----------------------------------- |
+| Node.js     | 22 LTS (`node -v` → v22.x)          |
+| npm         | ships with Node.js                  |
+| Git         | for cloning / updating              |
+| OS          | Linux (recommended), macOS, Windows |
+| RAM         | 4 GB minimum, 8 GB recommended      |
+| Disk        | 1 GB free minimum                   |
+| Browser     | Chrome / Firefox latest             |
 
-### 1. Install Node.js
+## 2. Install
 
 ```bash
-# Using nvm
+# 1. Node.js via nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 nvm install 22
 nvm use 22
-node -v  # Should show v22.x.x
-```
 
-### 2. Clone and Install
-
-```bash
-git clone <repo-url>
+# 2. Clone and install dependencies
+git clone <repo-url> alli-jamm
 cd alli-jamm
 npm install
-```
 
-### 3. Configure Environment
-
-```bash
+# 3. Configure environment
 cp .env.example .env
-# Edit .env if needed (defaults work for local)
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+# Paste the output as SESSION_SECRET in .env
 ```
 
-### 4. Initialize Database
+## 3. Environment Variables
+
+| Variable         | Default                    | Required | Description                                     |
+| ---------------- | -------------------------- | -------- | ----------------------------------------------- |
+| `DATABASE_URL`   | `./data/app.db`            | No       | SQLite database file path                       |
+| `SESSION_SECRET` | —                          | **Yes**  | Session signing secret (any long random string) |
+| `BACKUP_DIR`     | `./data/backups`           | No       | Where `.backup` files are stored                |
+| `PORT`           | `3000`                     | No       | Port via `npm run start -- -p <port>`           |
+| `NODE_ENV`       | `production` (build/start) | No       | Set automatically by Next.js                    |
+
+The app refuses to start sessions without `SESSION_SECRET` — generate one per
+machine and never commit `.env`.
+
+## 4. Initialize the Database
 
 ```bash
-npm run db:generate
-npm run db:migrate
-npm run db:seed  # Optional: seed with demo data
+npm run db:migrate   # apply migrations from drizzle/
+npm run db:seed      # creates roles + admin user (admin / admin123)
 ```
 
-### 5. Start Development Server
+> Do **not** run `db:generate` here — that creates new migration files during
+> development. Deployment only needs `db:migrate`.
 
-```bash
-npm run dev
-# Opens at http://localhost:3000
-```
+Change the admin password immediately after first login
+(النظام → المستخدمون).
 
-### 6. Login
-
-```
-Username: admin
-Password: admin123
-```
-
-## Production Build
+## 5. Build and Run (Production)
 
 ```bash
 npm run build
-npm run start
-# Runs on http://localhost:3000
+npm run start -- -p 3000
+# Open http://localhost:3000/login
 ```
 
-## Data Locations
+Verified working: production build compiles, migrations + seed succeed, login
+API returns 200, dashboard API and POS page return 200 (Phase 14 check).
 
-| Data       | Location        | Description                  |
-| ---------- | --------------- | ---------------------------- |
-| Database   | `data/app.db`   | SQLite database file         |
-| Backups    | `data/backups/` | Timestamped backup files     |
-| Uploads    | `uploads/`      | User-uploaded files (future) |
-| Migrations | `drizzle/`      | Database migration files     |
+## 6. Run as a Service (systemd, Linux)
 
-## Backup Procedure
+Create `/etc/systemd/system/alli-jamm.service`:
 
-### Manual Backup
+```ini
+[Unit]
+Description=alli-jamm inventory and POS
+After=network.target
+
+[Service]
+Type=simple
+User=alli
+WorkingDirectory=/opt/alli-jamm
+EnvironmentFile=/opt/alli-jamm/.env
+ExecStart=/home/alli/.nvm/versions/node/v22.23.2/bin/npm run start -- -p 3000
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ```bash
-# Copy database file
-cp data/app.db data/backups/app-$(date +%Y%m%d-%H%M%S).db
+sudo systemctl daemon-reload
+sudo systemctl enable --now alli-jamm
+sudo systemctl status alli-jamm
 ```
 
-### Application Backup
+Adjust `User=`, `WorkingDirectory=`, and the node path (`which node`) to the machine.
 
-Via the Settings page:
-
-1. Go to النظام → الإعدادات
-2. Click "إنشاء نسخة احتياطية"
-3. Download the backup file
-
-### Restore Procedure
-
-Via the Settings page:
-
-1. Go to النظام → الإعدادات
-2. Click "استعادة نسخة احتياطية"
-3. Select backup file
-4. Confirm (WARNING: This overwrites current data)
-5. System restarts
-
-## Environment Variables
-
-| Variable          | Default         | Description          |
-| ----------------- | --------------- | -------------------- |
-| `DATABASE_URL`    | `./data/app.db` | SQLite database path |
-| `JWT_SECRET`      | (generated)     | JWT signing secret   |
-| `NEXTAUTH_SECRET` | (generated)     | NextAuth secret      |
-| `NODE_ENV`        | `development`   | Environment mode     |
-
-## Troubleshooting
-
-### Port Already in Use
+## 7. Updating to a New Version
 
 ```bash
-# Find process using port 3000
-lsof -i :3000
-# Kill it
-kill -9 <PID>
+cd /opt/alli-jamm
+# 1. Safety backup first (Settings → backup, or copy the db file)
+cp data/app.db "data/backups/app-before-update-$(date +%Y%m%d-%H%M%S).db"
+# 2. Update
+git pull
+npm install
+npm run db:migrate   # new migrations, if any
+npm run build
+sudo systemctl restart alli-jamm
 ```
 
-### Database Locked
+## 8. Data Locations
 
-```bash
-# WAL mode should prevent this, but if it happens:
-# Stop the server
-# Delete data/app.db-wal
-# Restart the server
-```
+| Data       | Location                                      | Backed up?                         |
+| ---------- | --------------------------------------------- | ---------------------------------- |
+| Database   | `data/app.db` (+ `-wal`/`-shm` while running) | **Yes — critical**                 |
+| Backups    | `data/backups/` (`BACKUP_DIR` override)       | Yes (off-machine copy recommended) |
+| Migrations | `drizzle/`                                    | In git, no backup needed           |
 
-### Migration Errors
+`data/app.db*` is gitignored — it never leaves the machine via git.
+Copy `data/backups/` to external storage regularly.
 
-```bash
-# Reset database (CAUTION: deletes all data)
-rm data/app.db data/app.db-wal data/app.db-shm
-npm run db:generate
-npm run db:migrate
-npm run db:seed
-```
+## 9. Backup and Restore
 
-### Memory Issues
+- **Manual file backup:** stop the app (or rely on SQLite online backup),
+  then `cp data/app.db data/backups/app-$(date +%Y%m%d-%H%M%S).db`.
+- **In-app backup:** النظام → الإعدادات → إنشاء نسخة احتياطية (rate limit:
+  3 per hour per user), then download.
+- **Restore:** النظام → الإعدادات → استعادة — uploads a backup, verifies
+  integrity, takes a safety snapshot first, and requires typed confirmation.
+  **This overwrites current data** and signs everyone out.
 
-```bash
-# Increase Node.js memory limit
-NODE_OPTIONS="--max-old-space-size=4096" npm run dev
-```
+## 10. First-Login Checklist
 
-## System Requirements
-
-| Resource | Minimum                 | Recommended   |
-| -------- | ----------------------- | ------------- |
-| CPU      | 2 cores                 | 4 cores       |
-| RAM      | 4 GB                    | 8 GB          |
-| Disk     | 500 MB                  | 1 GB          |
-| OS       | Linux, macOS, Windows   | Linux         |
-| Browser  | Chrome 90+, Firefox 90+ | Chrome latest |
+1. Log in as `admin` / `admin123`.
+2. Change the admin password (النظام → المستخدمون).
+3. Create roles/users for cashiers and warehouse staff.
+4. Add warehouses, units, categories, products + opening stock.
+5. Create one test sale in POS, then a backup.
