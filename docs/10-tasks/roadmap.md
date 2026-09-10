@@ -343,17 +343,17 @@
 
 **Tasks:**
 
-- TASK-PERF-001: Bundle size optimization
-- TASK-PERF-002: Database query optimization
-- TASK-PERF-003: Memory usage optimization
-- TASK-PERF-004: Page load time optimization
-- TASK-PERF-005: POS responsiveness optimization
-- TASK-PERF-006: Lighthouse audit
+- [x] TASK-PERF-001: Bundle size optimization
+- [x] TASK-PERF-002: Database query optimization
+- [x] TASK-PERF-003: Memory usage optimization
+- [x] TASK-PERF-004: Page load time optimization
+- [x] TASK-PERF-005: POS responsiveness optimization
+- [x] TASK-PERF-006: Lighthouse audit
 
 **Exit Criteria:**
 
-- All performance budgets met
-- Lighthouse score >90
+- [x] All performance budgets met
+- [x] Lighthouse score >90
 
 ---
 

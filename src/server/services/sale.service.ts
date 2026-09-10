@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { and, asc, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 
 import { db } from "@/server/db";
 import {
@@ -93,10 +93,33 @@ export async function createSale(input: CreateSaleInput) {
   );
   const productRows =
     productIds.length > 0
-      ? await db.select().from(products).where(isNull(products.deletedAt))
+      ? await db
+          .select()
+          .from(products)
+          .where(and(isNull(products.deletedAt), inArray(products.id, productIds)))
       : [];
-  const productById = new Map(
-    productRows.filter((p) => productIds.includes(p.id)).map((p) => [p.id, p]),
+  const productById = new Map(productRows.map((p) => [p.id, p]));
+
+  // Batch stock check: one query for all requested product/warehouse pairs.
+  const stockPairs = input.items.filter((i) => !i.isService && i.productId);
+  const stockRows =
+    stockPairs.length > 0
+      ? await db
+          .select({
+            productId: stocks.productId,
+            warehouseId: stocks.warehouseId,
+            quantity: stocks.quantity,
+          })
+          .from(stocks)
+          .where(
+            inArray(
+              stocks.productId,
+              stockPairs.map((i) => i.productId as string),
+            ),
+          )
+      : [];
+  const stockByPair = new Map(
+    stockRows.map((r) => [`${r.productId}:${r.warehouseId}`, r.quantity]),
   );
 
   for (const item of input.items) {
@@ -110,15 +133,7 @@ export async function createSale(input: CreateSaleInput) {
     if (!product) {
       return { ok: false as const, error: "أحد الأصناف غير موجود" };
     }
-    const stockRow = await db
-      .select({ quantity: stocks.quantity })
-      .from(stocks)
-      .where(
-        and(eq(stocks.productId, product.id), eq(stocks.warehouseId, item.warehouseId)),
-      )
-      .limit(1)
-      .then((r) => r[0]);
-    const available = stockRow?.quantity ?? 0;
+    const available = stockByPair.get(`${product.id}:${item.warehouseId}`) ?? 0;
     if (available < Math.floor(item.quantity)) {
       return {
         ok: false as const,

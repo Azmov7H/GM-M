@@ -68,10 +68,11 @@ export async function createPurchase(input: CreatePurchaseInput) {
   }
 
   const productIds = Array.from(new Set(input.items.map((i) => i.productId)));
-  const productRows = await db.select().from(products).where(isNull(products.deletedAt));
-  const productById = new Map(
-    productRows.filter((p) => productIds.includes(p.id)).map((p) => [p.id, p]),
-  );
+  const productRows = await db
+    .select()
+    .from(products)
+    .where(and(isNull(products.deletedAt), inArray(products.id, productIds)));
+  const productById = new Map(productRows.map((p) => [p.id, p]));
   for (const item of input.items) {
     if (!productById.has(item.productId)) {
       return { ok: false as const, error: `الصنف ${item.productId} غير موجود` };
