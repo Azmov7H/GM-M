@@ -2,24 +2,24 @@
 
 ## Phase Progress
 
-| Phase | Status      | Start | End | Notes                  |
-| ----- | ----------- | ----- | --- | ---------------------- |
-| P0    | Complete    | —     | —   | Planning documentation |
-| P1    | Complete    | —     | —   | Infrastructure         |
-| P2    | Complete    | —     | —   | UX/UI                  |
-| P3    | Complete    | —     | —   | Database               |
-| P4    | Complete    | —     | —   | Auth                   |
-| P5    | Complete    | —     | —   | Inventory              |
-| P6    | Complete    | —     | —   | Sales & POS            |
-| P7    | Complete    | —     | —   | Purchasing             |
-| P8    | Complete    | —     | —   | Customers & Suppliers  |
-| P9    | Complete    | —     | —   | Reports & Dashboard    |
-| P10   | Complete    | —     | —   | Backup/Restore         |
-| P11   | Complete    | —     | —   | Security               |
-| P12   | Complete    | —     | —   | Performance            |
-| P13   | Complete    | —     | —   | Testing                |
-| P14   | Complete    | —     | —   | Deployment             |
-| P15   | Not Started | —     | —   | Final Acceptance       |
+| Phase | Status   | Start | End | Notes                  |
+| ----- | -------- | ----- | --- | ---------------------- |
+| P0    | Complete | —     | —   | Planning documentation |
+| P1    | Complete | —     | —   | Infrastructure         |
+| P2    | Complete | —     | —   | UX/UI                  |
+| P3    | Complete | —     | —   | Database               |
+| P4    | Complete | —     | —   | Auth                   |
+| P5    | Complete | —     | —   | Inventory              |
+| P6    | Complete | —     | —   | Sales & POS            |
+| P7    | Complete | —     | —   | Purchasing             |
+| P8    | Complete | —     | —   | Customers & Suppliers  |
+| P9    | Complete | —     | —   | Reports & Dashboard    |
+| P10   | Complete | —     | —   | Backup/Restore         |
+| P11   | Complete | —     | —   | Security               |
+| P12   | Complete | —     | —   | Performance            |
+| P13   | Complete | —     | —   | Testing                |
+| P14   | Complete | —     | —   | Deployment             |
+| P15   | Complete | —     | —   | Final Acceptance       |
 
 ## Weekly Progress
 
