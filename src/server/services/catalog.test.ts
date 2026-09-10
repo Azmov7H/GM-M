@@ -53,6 +53,24 @@ describe("catalog services", () => {
     expect(listed.some((p) => p.id === created.id)).toBe(true);
   });
 
+  it("treats LIKE wildcards in search as literal text", async () => {
+    const code = `WILD-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+    const created = await createProduct({
+      code,
+      name: "صنف عادي",
+      buyPrice: 1,
+      retailPrice: 2,
+    });
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+
+    // "%" must not expand into a match-all.
+    const pct = await listProducts({ search: "%" });
+    expect(pct.some((p) => p.id === created.id)).toBe(false);
+    const exact = await listProducts({ search: "صنف عادي" });
+    expect(exact.some((p) => p.id === created.id)).toBe(true);
+  });
+
   it("rejects duplicate product codes", async () => {
     const code = `DUP-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     const first = await createProduct({

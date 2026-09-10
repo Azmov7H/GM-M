@@ -7,6 +7,8 @@ import {
   assignUserRoles,
   deactivateUser,
   getUserDetail,
+  OWNER_GRANT_DENIED,
+  OWNER_MANAGE_DENIED,
   updateUser,
 } from "@/server/services/user.service";
 
@@ -62,19 +64,35 @@ export async function PUT(req: Request, ctx: RouteContext) {
     );
   }
 
-  const result = await updateUser(id, {
-    displayName: parsed.data.displayName,
-    email: parsed.data.email === "" ? null : parsed.data.email,
-    isActive: parsed.data.isActive,
-  });
+  const result = await updateUser(
+    id,
+    {
+      displayName: parsed.data.displayName,
+      email: parsed.data.email === "" ? null : parsed.data.email,
+      isActive: parsed.data.isActive,
+    },
+    { id: user.id, roles: user.roles },
+  );
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 404 });
+    const status =
+      result.error === OWNER_MANAGE_DENIED || result.error === OWNER_GRANT_DENIED
+        ? 403
+        : 404;
+    return NextResponse.json({ error: result.error }, { status });
   }
 
   if (parsed.data.roleIds !== undefined) {
-    const rolesResult = await assignUserRoles(id, parsed.data.roleIds);
+    const rolesResult = await assignUserRoles(id, parsed.data.roleIds, {
+      id: user.id,
+      roles: user.roles,
+    });
     if (!rolesResult.ok) {
-      return NextResponse.json({ error: rolesResult.error }, { status: 404 });
+      const status =
+        rolesResult.error === OWNER_MANAGE_DENIED ||
+        rolesResult.error === OWNER_GRANT_DENIED
+          ? 403
+          : 404;
+      return NextResponse.json({ error: rolesResult.error }, { status });
     }
   }
 
@@ -91,9 +109,10 @@ export async function DELETE(_req: Request, ctx: RouteContext) {
     return NextResponse.json({ error: "صلاحية غير كافية" }, { status: 403 });
   }
 
-  const result = await deactivateUser(id, user.id);
+  const result = await deactivateUser(id, user.id, { id: user.id, roles: user.roles });
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
+    const status = result.error === OWNER_MANAGE_DENIED ? 403 : 400;
+    return NextResponse.json({ error: result.error }, { status });
   }
   return NextResponse.json({ ok: true });
 }

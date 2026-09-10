@@ -46,7 +46,13 @@ export async function POST(req: Request, ctx: RouteContext) {
   }
 
   const newPassword = parsed.data.newPassword ?? newTempPassword();
-  await resetUserPassword(id, newPassword);
+  const reset = await resetUserPassword(id, newPassword, {
+    id: user.id,
+    roles: user.roles,
+  });
+  if (!reset.ok) {
+    return NextResponse.json({ error: reset.error }, { status: 403 });
+  }
   return NextResponse.json({
     ok: true,
     tempPassword: parsed.data.newPassword ? undefined : newPassword,

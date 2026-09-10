@@ -15,7 +15,7 @@
 | P8    | Complete    | —     | —   | Customers & Suppliers  |
 | P9    | Complete    | —     | —   | Reports & Dashboard    |
 | P10   | Complete    | —     | —   | Backup/Restore         |
-| P11   | Not Started | —     | —   | Security               |
+| P11   | Complete    | —     | —   | Security               |
 | P12   | Not Started | —     | —   | Performance            |
 | P13   | Not Started | —     | —   | Testing                |
 | P14   | Not Started | —     | —   | Deployment             |

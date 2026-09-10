@@ -2,11 +2,11 @@
 
 ## Current Phase
 
-**PHASE 10 — Backup / Restore / Import / Export** (Complete)
+**PHASE 11 — Security Hardening** (Complete)
 
 ## Current Task
 
-Phase 10 handed off; next phase is Phase 11 (Security Hardening).
+Phase 11 handed off; next phase is Phase 12 (Performance Optimization).
 
 ## Status Summary
 
@@ -24,6 +24,7 @@ Phase 10 handed off; next phase is Phase 11 (Security Hardening).
 | Customers & Suppliers (P8) | Complete    |
 | Reports & Dashboard (P9)   | Complete    |
 | Backup / Restore (P10)     | Complete    |
+| Security Hardening (P11)   | Complete    |
 | Implementation             | In Progress |
 | Testing                    | In Progress |
 | Deployment                 | Not Started |
@@ -123,6 +124,10 @@ Phase 10 handed off; next phase is Phase 11 (Security Hardening).
 - [x] Settings backup card (owner-gated) + products import/export UI
 - [x] Phase 10 verified live incl. restore round-trip + RBAC, cleanup done
 - [x] 87 tests passing (18 files); lint/typecheck/format/build green
+- [x] Fixed owner-role escalation (grant/reset/deactivate guards) + user audit trail
+- [x] CSRF same-origin guard, LIKE-wildcard escaping, cookie flags verified
+- [x] Phase 11 verified live (escalation 403s, CSRF 403, rate-limit 429), cleanup done
+- [x] 95 tests passing (19 files); lint/typecheck/format/build green
 
 ## Blocked
 
@@ -132,9 +137,9 @@ Phase 10 handed off; next phase is Phase 11 (Security Hardening).
 
 ## Next Task
 
-**Phase 11 — Security Hardening** (TASK-SEC-001..008)
+**Phase 12 — Performance Optimization** (TASK-PERF-001..006)
 
-Security review, auth bypass/escalation testing, input validation, XSS/CSRF, rate limits, audit completeness.
+Bundle size, query/memory/page-load/POS optimization, Lighthouse audit.
 
 ## Known Risks
 
@@ -172,4 +177,4 @@ docs/
 
 ## Recommendation
 
-**Approve Phase 10 and proceed to Phase 11 (Security Hardening).**
+**Approve Phase 11 and proceed to Phase 12 (Performance Optimization).**

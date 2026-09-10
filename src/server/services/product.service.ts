@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { and, asc, eq, isNull, like, or } from "drizzle-orm";
+import { and, asc, eq, isNull, sql } from "drizzle-orm";
 
 import { db } from "@/server/db";
 import { categories, products, units } from "@/server/db/schema";
@@ -19,8 +19,11 @@ export async function listProducts(filter: ProductListFilter = {}) {
     conditions.push(eq(products.categoryId, filter.categoryId));
   }
   if (filter.search) {
-    const q = `%${filter.search.trim()}%`;
-    conditions.push(or(like(products.name, q), like(products.code, q))!);
+    // Escape LIKE wildcards so user input matches literally.
+    const escaped = `%${filter.search.trim().replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_")}%`;
+    conditions.push(
+      sql`(${products.name} LIKE ${escaped} ESCAPE '\\' OR ${products.code} LIKE ${escaped} ESCAPE '\\')`,
+    );
   }
   return db
     .select({

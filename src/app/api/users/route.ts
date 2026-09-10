@@ -3,7 +3,11 @@ import { z } from "zod";
 
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { hasPermission } from "@/lib/auth/permissions";
-import { createUser, listUsers } from "@/server/services/user.service";
+import {
+  createUser,
+  listUsers,
+  OWNER_GRANT_DENIED,
+} from "@/server/services/user.service";
 
 const createUserSchema = z.object({
   username: z.string().trim().min(3, "اسم المستخدم 3 أحرف على الأقل"),
@@ -49,16 +53,20 @@ export async function POST(req: Request) {
     );
   }
 
-  const result = await createUser({
-    username: parsed.data.username,
-    displayName: parsed.data.displayName,
-    email: parsed.data.email || undefined,
-    password: parsed.data.password,
-    roleIds: parsed.data.roleIds,
-  });
+  const result = await createUser(
+    {
+      username: parsed.data.username,
+      displayName: parsed.data.displayName,
+      email: parsed.data.email || undefined,
+      password: parsed.data.password,
+      roleIds: parsed.data.roleIds,
+    },
+    { id: user.id, roles: user.roles },
+  );
 
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 409 });
+    const status = result.error === OWNER_GRANT_DENIED ? 403 : 409;
+    return NextResponse.json({ error: result.error }, { status });
   }
   return NextResponse.json({ ok: true, id: result.id }, { status: 201 });
 }
