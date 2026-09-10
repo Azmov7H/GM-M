@@ -14,7 +14,7 @@
 | P7    | Complete    | —     | —   | Purchasing             |
 | P8    | Complete    | —     | —   | Customers & Suppliers  |
 | P9    | Complete    | —     | —   | Reports & Dashboard    |
-| P10   | Not Started | —     | —   | Backup/Restore         |
+| P10   | Complete    | —     | —   | Backup/Restore         |
 | P11   | Not Started | —     | —   | Security               |
 | P12   | Not Started | —     | —   | Performance            |
 | P13   | Not Started | —     | —   | Testing                |

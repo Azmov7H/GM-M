@@ -17,6 +17,14 @@ export interface SessionPayload {
   exp: number;
 }
 
+// In-memory revocation watermark (e.g. after a database restore all
+// pre-existing tokens stop validating). Reset on process restart.
+let invalidatedBeforeMs = 0;
+
+export function invalidateAllSessions(now = Date.now()): void {
+  invalidatedBeforeMs = now;
+}
+
 export async function signSessionToken(userId: string): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   return new SignJWT({ userId })
@@ -33,6 +41,9 @@ export async function verifySessionToken(token: string): Promise<SessionPayload 
     });
     const userId = payload.userId;
     if (typeof userId !== "string" || !userId) return null;
+    if (typeof payload.iat === "number" && payload.iat * 1000 < invalidatedBeforeMs) {
+      return null;
+    }
     return {
       userId,
       iat: typeof payload.iat === "number" ? payload.iat : 0,

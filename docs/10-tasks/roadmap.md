@@ -301,16 +301,16 @@
 
 **Tasks:**
 
-- TASK-BKUP-001: Implement backup creation
-- TASK-BKUP-002: Implement backup restore
-- TASK-BKUP-003: Implement backup list
-- TASK-BKUP-004: Implement CSV import
-- TASK-BKUP-005: Implement CSV export
+- [x] TASK-BKUP-001: Implement backup creation
+- [x] TASK-BKUP-002: Implement backup restore
+- [x] TASK-BKUP-003: Implement backup list
+- [x] TASK-BKUP-004: Implement CSV import
+- [x] TASK-BKUP-005: Implement CSV export
 
 **Exit Criteria:**
 
-- Backup/restore working
-- CSV import/export working
+- [x] Backup/restore working
+- [x] CSV import/export working
 
 ---
 
