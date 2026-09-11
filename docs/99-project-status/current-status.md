@@ -8,6 +8,14 @@
 
 All 15 phases complete. Project accepted — maintenance mode.
 
+**Customization track (client-approved):** company/invoice settings, returns +
+cashier pages, invoice-number hardening — implemented and verified
+(107 unit, 33 e2e).
+
+**Customization track (client-approved):** company/invoice settings, returns +
+cashier pages, invoice-number hardening — implemented and verified
+(107 unit, 33 e2e).
+
 ## Status Summary
 
 | Category                   | Status   |

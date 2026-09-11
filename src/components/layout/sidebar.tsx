@@ -204,6 +204,21 @@ export function Sidebar() {
     setOverridden(typeof value === "function" ? value(collapsed) : value);
   };
 
+  const [companyName, setCompanyName] = React.useState(appName);
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch("/api/settings")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((body: { settings?: Record<string, string> } | null) => {
+        const name = body?.settings?.["company.name"]?.trim();
+        if (!cancelled && name) setCompanyName(name);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <SidebarContext.Provider value={{ collapsed, setCollapsed }}>
       <aside
@@ -220,7 +235,7 @@ export function Sidebar() {
           </div>
           {!collapsed && (
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-sm font-semibold">{appName}</span>
+              <span className="truncate text-sm font-semibold">{companyName}</span>
               <span className="text-muted-foreground text-xs">{appVersion}</span>
             </div>
           )}

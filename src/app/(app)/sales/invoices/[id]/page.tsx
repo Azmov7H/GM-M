@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { hasPermission } from "@/lib/auth/permissions";
 import { getSale } from "@/server/services/sale.service";
+import { getSettings } from "@/server/services/settings.service";
 import { InvoiceDetail } from "@/components/sales/invoice-detail";
 import { PageError } from "@/components/shared/page-error";
 
@@ -33,6 +34,8 @@ export default async function InvoiceDetailPage({
     notFound();
   }
 
+  const s = await getSettings();
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold tracking-tight print:hidden">
@@ -42,6 +45,17 @@ export default async function InvoiceDetailPage({
         sale={sale}
         canReturn={hasPermission(user.permissions, "invoices:return")}
         canCancel={hasPermission(user.permissions, "invoices:delete")}
+        branding={{
+          companyName: s["company.name"],
+          companyPhone: s["company.phone"],
+          companyAddress: s["company.address"],
+          footer: s["company.footer"],
+          template: s["invoice.template"] === "compact" ? "compact" : "standard",
+          paper: s["invoice.paper"] === "80mm" ? "80mm" : "a4",
+          showCustomer: s["invoice.show_customer"] === "true",
+          showPayment: s["invoice.show_payment"] === "true",
+          showCashier: s["invoice.show_cashier"] === "true",
+        }}
       />
     </div>
   );

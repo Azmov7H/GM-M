@@ -66,6 +66,18 @@ Sources: `scope.md` Future Features + `REQ-PROD-012` (barcode field) +
 Multi-tenant, cloud sync, mobile app, online payments, Electron wrapper,
 Docker deployment, external API integrations, full accounting ledger.
 
+## Approved customization track (implemented)
+
+Client-approved, internal-use only — translation, online payments, and product
+images stay out of scope:
+
+- CUST-01: Company/invoice settings (`company.*`, `invoice.*` keys, legacy
+  `store.name` migration, `users:update`-gated API + UI).
+- CUST-02: Missing pages built — `/sales/returns` (return workflow),
+  `/finance/cashier` (daily closing), group index redirects.
+- CUST-03: Business-logic hardening — invoice-number collision retry,
+  cashier expected-cash reconciliation, 107 unit + 33 e2e green.
+
 ## Suggested execution order
 
 1. Part A (1 session) → honest baseline.
