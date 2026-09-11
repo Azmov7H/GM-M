@@ -30,7 +30,13 @@ function Row({
   );
 }
 
-export function CashierSummary({ summary }: { summary: CashierSummaryData }) {
+export function CashierSummary({
+  summary,
+  currency = "ر.س",
+}: {
+  summary: CashierSummaryData;
+  currency?: string;
+}) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       <Card>
@@ -56,7 +62,11 @@ export function CashierSummary({ summary }: { summary: CashierSummaryData }) {
           <Row label="تحصيل من العملاء" value={summary.collectedTotal} />
           <Row label="مدفوع للموردين" value={summary.paidOutTotal} />
           <Row label="مردود نقدي" value={summary.returnsTotal} />
-          <Row label="النقد المتوقع في الدرج" value={summary.expectedCash} strong />
+          <Row
+            label={`النقد المتوقع في الدرج (${currency})`}
+            value={summary.expectedCash}
+            strong
+          />
         </CardContent>
       </Card>
     </div>
