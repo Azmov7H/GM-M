@@ -26,3 +26,23 @@
 - Update probability and impact based on new information
 - Add new risks as they are identified
 - Close risks that are no longer relevant
+
+## Retirement — Part A Close-out (CLOSE-02)
+
+| Risk ID  | Verdict                  | Rationale                                                             |
+| -------- | ------------------------ | --------------------------------------------------------------------- |
+| RISK-001 | **Retired**              | Toolchain runs on this hardware: 107 vitest + build green (P1/P13)    |
+| RISK-005 | **Retired**              | RTL verified by `a11y-rtl.spec.ts` across 8 pages (P13)               |
+| RISK-008 | **Retired**              | Lighthouse 95 dashboard + 95 POS on desktop (P12)                     |
+| RISK-009 | **Retired**              | P11 audit done: 50/50 routes authed, escalation guards, CSRF          |
+| RISK-011 | **Retired**              | Components tested in RTL; logical props used throughout (P2/P13)      |
+| RISK-012 | **Retired**              | Migrations tested on clean scratch DBs repeatedly (P13/P14/CUST)      |
+| RISK-015 | **Retired**              | No leak evidence in testing; systemd `Restart=on-failure` documented  |
+| RISK-002 | **Active (operational)** | WAL + single-writer + txns hold; monitor `SQLITE_BUSY` in prod logs   |
+| RISK-003 | **Active (operational)** | Atomic sales + invoice retry hold; safety net is daily backup         |
+| RISK-004 | **Active (operational)** | Integrity-checked backups + safety snapshots; keep off-machine copies |
+| RISK-006 | **Active (process)**     | Applies to all future AI-generated code; gates stay mandatory         |
+| RISK-007 | **Active (process)**     | v2 scope gated by change-request process in `scope.md`                |
+| RISK-010 | **Active (low)**         | Pinned to Node 22 LTS; revisit on Node 24 LTS                         |
+| RISK-013 | **Active (process)**     | Client check-ins continue through go-live                             |
+| RISK-014 | **Active (process)**     | Mitigated by docs; demo script + manuals transfer knowledge           |

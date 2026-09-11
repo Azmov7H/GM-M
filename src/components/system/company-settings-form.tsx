@@ -20,6 +20,7 @@ const TEXT_KEYS = [
   { key: "company.phone", label: "الهاتف", placeholder: "05xxxxxxxx" },
   { key: "company.address", label: "العنوان", placeholder: "المدينة، الحي، الشارع" },
   { key: "company.footer", label: "تذييل الفاتورة", placeholder: "شكراً لتسوقكم معنا" },
+  { key: "company.currency", label: "العملة", placeholder: "ر.س" },
 ] as const;
 
 const BOOL_KEYS = [

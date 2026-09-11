@@ -13,6 +13,10 @@ export const SETTING_DEFS = {
   "company.phone": { default: "", validate: (v: string) => v.length <= 30 },
   "company.address": { default: "", validate: (v: string) => v.length <= 300 },
   "company.footer": { default: "", validate: (v: string) => v.length <= 300 },
+  "company.currency": {
+    default: "ر.س",
+    validate: (v: string) => v.trim().length > 0 && v.length <= 10,
+  },
   "invoice.template": {
     default: "standard",
     validate: (v: string) => v === "standard" || v === "compact",
@@ -46,6 +50,10 @@ export function isSettingKey(key: string): key is SettingKey {
 }
 
 const LEGACY_COMPANY_KEY = "store.name";
+const LEGACY_FALLBACKS: Partial<Record<SettingKey, string>> = {
+  "company.name": "store.name",
+  "company.currency": "store.currency",
+};
 
 async function readRaw(key: string): Promise<string | undefined> {
   const rows = await db
@@ -68,15 +76,19 @@ export async function getSettings(): Promise<Record<SettingKey, string>> {
   if (!map.has("company.name") && map.has(LEGACY_COMPANY_KEY)) {
     out["company.name"] = map.get(LEGACY_COMPANY_KEY)!;
   }
+  if (!map.has("company.currency") && map.has("store.currency")) {
+    out["company.currency"] = map.get("store.currency")!;
+  }
   return out;
 }
 
 export async function getSetting(key: SettingKey): Promise<string> {
   const value = await readRaw(key);
   if (value !== undefined) return value;
-  // Transparent migration: old DBs carry the name under the legacy key.
-  if (key === "company.name") {
-    const legacy = await readRaw(LEGACY_COMPANY_KEY);
+  // Transparent migration: old DBs carry values under legacy keys.
+  const legacyKey = LEGACY_FALLBACKS[key];
+  if (legacyKey) {
+    const legacy = await readRaw(legacyKey);
     if (legacy !== undefined && legacy.trim().length > 0) return legacy;
   }
   return SETTING_DEFS[key].default;

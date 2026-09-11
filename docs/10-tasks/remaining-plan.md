@@ -5,15 +5,13 @@ covers everything left to make the system live and evolve it. Three parts:
 **A. Close-out**, **B. Go-live**, **C. v2 roadmap**. Nothing in Part C is
 committed until approved per the change-request process in `scope.md`.
 
-## Part A — Close-out (docs hygiene, no code)
+## Part A — Close-out ✅ Done
 
-| ID       | Item                                                                                                                                                                                             | Owner |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
-| CLOSE-01 | Reconcile `docs/10-tasks/backlog.md`: 28 tasks still read "Pending" though implemented — mark Done with phase/commit refs                                                                        | Dev   |
-| CLOSE-02 | Retire `risk-register.md` risks that are mitigated (RISK-001 AMD bus error, RISK-005 RTL, RISK-008 perf, RISK-009 security audit, RISK-012 migrations); keep RISK-002/003/004/007 as operational | Dev   |
-| CLOSE-03 | Verify every P0/P1 requirement in `requirements.md` traces to an implemented route/service (spot-check, don't re-test everything)                                                                | Dev   |
-
-Size: Small. Do first — it unblocks honest progress tracking.
+| ID       | Item                                                        | Status                                                                    |
+| -------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| CLOSE-01 | Reconcile backlog: 28 tasks Pending → Done with commit refs | Done (reconciliation table in `backlog.md`)                               |
+| CLOSE-02 | Retire mitigated risks                                      | Done (7 retired, 8 active in `risk-register.md`)                          |
+| CLOSE-03 | P0/P1 traceability spot-check                               | Done (table in `requirements.md`; found + fixed REQ-SET-002 currency gap) |
 
 ## Part B — Go-live punch list (operations, no new features)
 

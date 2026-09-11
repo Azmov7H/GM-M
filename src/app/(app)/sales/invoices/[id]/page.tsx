@@ -49,6 +49,7 @@ export default async function InvoiceDetailPage({
           companyName: s["company.name"],
           companyPhone: s["company.phone"],
           companyAddress: s["company.address"],
+          currency: s["company.currency"],
           footer: s["company.footer"],
           template: s["invoice.template"] === "compact" ? "compact" : "standard",
           paper: s["invoice.paper"] === "80mm" ? "80mm" : "a4",

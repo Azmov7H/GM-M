@@ -71,6 +71,7 @@ export interface InvoiceBranding {
   companyName: string;
   companyPhone: string;
   companyAddress: string;
+  currency: string;
   footer: string;
   template: "standard" | "compact";
   paper: "a4" | "80mm";
@@ -83,6 +84,7 @@ export const DEFAULT_BRANDING: InvoiceBranding = {
   companyName: "مؤسستي",
   companyPhone: "",
   companyAddress: "",
+  currency: "ر.س",
   footer: "",
   template: "standard",
   paper: "a4",
@@ -334,7 +336,9 @@ export function InvoiceDetail({
             </div>
             <div className="flex justify-between text-base font-bold">
               <span>الإجمالي</span>
-              <span dir="ltr">{sale.total.toFixed(2)}</span>
+              <span dir="ltr">
+                {sale.total.toFixed(2)} {branding.currency}
+              </span>
             </div>
           </CardContent>
         </Card>

@@ -16,6 +16,7 @@ import { getSetting, getSettings, updateSettings } from "./settings.service";
 describe("settings service", () => {
   it("returns defaults for missing keys", async () => {
     expect(await getSetting("company.name")).toBe("مؤسستي");
+    expect(await getSetting("company.currency")).toBe("ر.س");
     expect(await getSetting("invoice.template")).toBe("standard");
     expect(await getSetting("sale.allow_below_cost")).toBe("false");
   });
@@ -45,5 +46,9 @@ describe("settings service", () => {
     expect(await updateSettings({ "company.name": "" })).toMatchObject({
       ok: false,
     });
+    expect(await updateSettings({ "company.currency": "دولار" })).toMatchObject({
+      ok: true,
+    });
+    expect(await getSetting("company.currency")).toBe("دولار");
   });
 });

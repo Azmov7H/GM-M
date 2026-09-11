@@ -268,3 +268,31 @@
 | REQ-NFR-L004 | Backups as single files                               | P0       |
 | REQ-NFR-L005 | Works on Node.js 22 LTS                               | P0       |
 | REQ-NFR-L006 | Works on 4 GB RAM, 2 CPU cores                        | P0       |
+
+## Traceability Spot-check — Part A Close-out (CLOSE-03)
+
+Sampled P0/P1 requirements verified against implementation (all pass):
+
+| Requirement                                | Proof                                                                                                                                                                           |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-AUTH-002 bcrypt 12 rounds              | `seed.ts` `bcryptPassword("admin123")`; `password.test.ts`                                                                                                                      |
+| REQ-AUTH-004/005 expiry + sliding refresh  | `proxy.ts` sliding refresh; `session-token.test.ts`                                                                                                                             |
+| REQ-AUTH-007 RBAC everywhere               | 50/50 routes enforce auth (P11); `requireApiPermission`                                                                                                                         |
+| REQ-USER-005 last-admin guard              | `user-security.test.ts` deactivate guards                                                                                                                                       |
+| REQ-PROD-004 unique codes                  | `products.code` UNIQUE + "رمز المنتج موجود مسبقاً" (`product.service.ts:106`)                                                                                                   |
+| REQ-PROD-008 buy/retail/wholesale prices   | `products` columns; profit reports use `buyPrice`                                                                                                                               |
+| REQ-INV-004 no negative stock              | `INSUFFICIENT_STOCK` guard in `createSale` txn                                                                                                                                  |
+| REQ-SALE-004 insufficient stock blocked    | Same guard; POS e2e covers oversell                                                                                                                                             |
+| REQ-SALE-006/007 partial returns + restore | `sale-return.service.ts`; `/sales/returns` page (CUST-02)                                                                                                                       |
+| REQ-PUR-005 receive into warehouse         | Receive adds to `wh_main` only (`purchase.service.ts`)                                                                                                                          |
+| REQ-CUST-002/REQ-SUPP-002 balances         | `party.service.ts` balances; over-payment + deactivate guards                                                                                                                   |
+| REQ-FIN-001/003 treasury + debts           | `/finance/cashier` closing + `/finance/debts` center                                                                                                                            |
+| REQ-REP-006 date filters                   | UTC `createdAt.slice(0,10)` + `gte`/`lt` ranges (P12)                                                                                                                           |
+| REQ-SET-001 store name/details             | `company.*` settings + UI (CUST-01)                                                                                                                                             |
+| REQ-SET-002 currency                       | **Gap found and fixed in close-out**: `store.currency` was seeded but unused — now `company.currency` (default ر.س, legacy fallback) shown on invoice total and cashier closing |
+| REQ-SET-003 settings in DB                 | `settings` table + `settings.service.ts`                                                                                                                                        |
+| REQ-BKUP-001/002 backup/restore            | Online backup API + gated restore (P10)                                                                                                                                         |
+
+Note: REQ-PROD-012 (barcode field) and REQ-CUST-006 (installments) are
+explicitly `Future` requirements — tracked in `remaining-plan.md` Part C,
+not gaps.

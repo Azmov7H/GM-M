@@ -180,6 +180,12 @@ const SETTING_SEEDS = [
     description: "تذييل الفاتورة",
   },
   {
+    key: "company.currency",
+    value: "ر.س",
+    category: "general",
+    description: "العملة",
+  },
+  {
     key: "invoice.template",
     value: "standard",
     category: "invoice",
