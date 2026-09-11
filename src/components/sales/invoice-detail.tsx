@@ -67,10 +67,35 @@ async function api(path: string, init?: RequestInit) {
   return { ok: res.ok, error: data?.error ?? null };
 }
 
+export interface InvoiceBranding {
+  companyName: string;
+  companyPhone: string;
+  companyAddress: string;
+  footer: string;
+  template: "standard" | "compact";
+  paper: "a4" | "80mm";
+  showCustomer: boolean;
+  showPayment: boolean;
+  showCashier: boolean;
+}
+
+export const DEFAULT_BRANDING: InvoiceBranding = {
+  companyName: "مؤسستي",
+  companyPhone: "",
+  companyAddress: "",
+  footer: "",
+  template: "standard",
+  paper: "a4",
+  showCustomer: true,
+  showPayment: true,
+  showCashier: true,
+};
+
 export function InvoiceDetail({
   sale,
   canReturn,
   canCancel,
+  branding = DEFAULT_BRANDING,
 }: {
   sale: {
     id: string;
@@ -92,6 +117,7 @@ export function InvoiceDetail({
   };
   canReturn: boolean;
   canCancel: boolean;
+  branding?: InvoiceBranding;
 }) {
   const router = useRouter();
   const [notice, setNotice] = React.useState<string | null>(null);
@@ -102,6 +128,7 @@ export function InvoiceDetail({
   const [saving, setSaving] = React.useState(false);
 
   const returnable = sale.status !== "cancelled" && sale.status !== "returned";
+  const compact = branding.template === "compact";
 
   const submitReturn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +194,26 @@ export function InvoiceDetail({
           {error}
         </p>
       )}
-      <div data-slot="invoice-print" className="flex flex-col gap-4">
+      <div
+        data-slot="invoice-print"
+        className={`flex flex-col ${compact ? "gap-2" : "gap-4"} ${branding.paper === "80mm" ? "mx-auto w-full max-w-[80mm]" : ""}`}
+      >
+        <Card>
+          <CardContent className="flex flex-col items-center gap-1 py-4 text-center">
+            <p className="text-lg font-bold">{branding.companyName}</p>
+            {[branding.companyPhone, branding.companyAddress]
+              .filter(Boolean)
+              .map((line) => (
+                <p key={line} className="text-muted-foreground text-xs" dir="auto">
+                  {line}
+                </p>
+              ))}
+            <p className="text-muted-foreground text-sm">
+              فاتورة <span dir="ltr">#{sale.invoiceNumber}</span> —{" "}
+              {new Date(sale.createdAt).toLocaleString("ar")}
+            </p>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>
@@ -175,21 +221,27 @@ export function InvoiceDetail({
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
-            <div>
-              <p className="text-muted-foreground">العميل</p>
-              <p className="font-medium">{sale.customerName ?? "نقدي"}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">البائع</p>
-              <p className="font-medium">{sale.userName ?? "—"}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">الدفع</p>
-              <p className="font-medium">
-                {PAYMENT_LABELS[sale.paymentType] ?? sale.paymentType} —{" "}
-                {sale.paymentStatus}
-              </p>
-            </div>
+            {branding.showCustomer && (
+              <div>
+                <p className="text-muted-foreground">العميل</p>
+                <p className="font-medium">{sale.customerName ?? "نقدي"}</p>
+              </div>
+            )}
+            {branding.showCashier && (
+              <div>
+                <p className="text-muted-foreground">البائع</p>
+                <p className="font-medium">{sale.userName ?? "—"}</p>
+              </div>
+            )}
+            {branding.showPayment && (
+              <div>
+                <p className="text-muted-foreground">الدفع</p>
+                <p className="font-medium">
+                  {PAYMENT_LABELS[sale.paymentType] ?? sale.paymentType} —{" "}
+                  {sale.paymentStatus}
+                </p>
+              </div>
+            )}
             <div>
               <p className="text-muted-foreground">الحالة</p>
               <Badge variant={sale.status === "cancelled" ? "destructive" : "outline"}>
@@ -286,6 +338,9 @@ export function InvoiceDetail({
             </div>
           </CardContent>
         </Card>
+        {branding.footer && (
+          <p className="text-muted-foreground text-center text-xs">{branding.footer}</p>
+        )}
       </div>
 
       <div className="flex flex-wrap gap-2 print:hidden">

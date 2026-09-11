@@ -216,127 +216,140 @@ export async function createSale(input: CreateSaleInput) {
     paymentStatus = "paid";
   }
 
-  const saleId = uid("sale");
+  let saleId = uid("sale");
   const now = new Date().toISOString();
   let invoiceNumber = 0;
 
-  try {
-    db.transaction((tx) => {
-      const maxRow = tx
-        .select({ n: sql<number | null>`max(${sales.invoiceNumber})` })
-        .from(sales)
-        .limit(1)
-        .all()[0];
-      invoiceNumber = (maxRow?.n ?? 0) + 1;
+  // Retry on invoice-number collision: two concurrent sales can read the same
+  // MAX() before either commits (UNIQUE constraint rejects the loser).
+  for (let attempt = 0; attempt < 3; attempt++) {
+    saleId = uid("sale");
+    try {
+      db.transaction((tx) => {
+        const maxRow = tx
+          .select({ n: sql<number | null>`max(${sales.invoiceNumber})` })
+          .from(sales)
+          .limit(1)
+          .all()[0];
+        invoiceNumber = (maxRow?.n ?? 0) + 1;
 
-      tx.insert(sales)
-        .values({
-          id: saleId,
-          invoiceNumber,
-          customerId: customer?.id ?? null,
-          userId: input.userId,
-          subtotal,
-          discount,
-          tax,
-          total,
-          paymentType: input.paymentType,
-          paymentStatus,
-          notes: input.notes?.trim() || null,
-          status: "completed",
-        })
-        .run();
-
-      const movementId = () => `mov_${randomUUID().slice(0, 8)}`;
-      for (const line of lines) {
-        tx.insert(saleItems)
+        tx.insert(sales)
           .values({
-            id: `sitem_${randomUUID().slice(0, 8)}`,
-            saleId,
-            productId: line.productId,
-            productName: line.productName,
-            productCode: line.productCode,
-            quantity: line.quantity,
-            unitPrice: line.unitPrice,
-            total: line.total,
-            warehouseId: line.warehouseId,
-            isService: line.isService,
+            id: saleId,
+            invoiceNumber,
+            customerId: customer?.id ?? null,
+            userId: input.userId,
+            subtotal,
+            discount,
+            tax,
+            total,
+            paymentType: input.paymentType,
+            paymentStatus,
+            notes: input.notes?.trim() || null,
+            status: "completed",
           })
           .run();
 
-        if (!line.isService && line.productId) {
-          const stockRow = tx
-            .select({ quantity: stocks.quantity })
-            .from(stocks)
-            .where(
-              and(
-                eq(stocks.productId, line.productId),
-                eq(stocks.warehouseId, line.warehouseId),
-              ),
-            )
-            .limit(1)
-            .all()[0];
-          const available = stockRow?.quantity ?? 0;
-          if (available < line.quantity) {
-            throw new Error("INSUFFICIENT_STOCK");
-          }
-          tx.update(stocks)
-            .set({ quantity: available - line.quantity, updatedAt: now })
-            .where(
-              and(
-                eq(stocks.productId, line.productId),
-                eq(stocks.warehouseId, line.warehouseId),
-              ),
-            )
-            .run();
-          tx.insert(stockMovements)
+        const movementId = () => `mov_${randomUUID().slice(0, 8)}`;
+        for (const line of lines) {
+          tx.insert(saleItems)
             .values({
-              id: movementId(),
+              id: `sitem_${randomUUID().slice(0, 8)}`,
+              saleId,
               productId: line.productId,
+              productName: line.productName,
+              productCode: line.productCode,
+              quantity: line.quantity,
+              unitPrice: line.unitPrice,
+              total: line.total,
               warehouseId: line.warehouseId,
-              quantity: -line.quantity,
-              type: "SALE",
-              referenceType: "sale",
-              referenceId: saleId,
-              reason: null,
+              isService: line.isService,
+            })
+            .run();
+
+          if (!line.isService && line.productId) {
+            const stockRow = tx
+              .select({ quantity: stocks.quantity })
+              .from(stocks)
+              .where(
+                and(
+                  eq(stocks.productId, line.productId),
+                  eq(stocks.warehouseId, line.warehouseId),
+                ),
+              )
+              .limit(1)
+              .all()[0];
+            const available = stockRow?.quantity ?? 0;
+            if (available < line.quantity) {
+              throw new Error("INSUFFICIENT_STOCK");
+            }
+            tx.update(stocks)
+              .set({ quantity: available - line.quantity, updatedAt: now })
+              .where(
+                and(
+                  eq(stocks.productId, line.productId),
+                  eq(stocks.warehouseId, line.warehouseId),
+                ),
+              )
+              .run();
+            tx.insert(stockMovements)
+              .values({
+                id: movementId(),
+                productId: line.productId,
+                warehouseId: line.warehouseId,
+                quantity: -line.quantity,
+                type: "SALE",
+                referenceType: "sale",
+                referenceId: saleId,
+                reason: null,
+                userId: input.userId,
+              })
+              .run();
+          }
+        }
+
+        if (customer) {
+          tx.insert(payments)
+            .values({
+              id: `pay_${randomUUID().slice(0, 8)}`,
+              entityType: "customer",
+              entityId: customer.id,
+              saleId,
+              amount: paidAmount,
+              paymentType: input.paymentType,
+              notes: null,
               userId: input.userId,
             })
             .run();
+          const remaining = total - paidAmount;
+          if (remaining > 0) {
+            const custRow = tx
+              .select({ balance: customers.balance })
+              .from(customers)
+              .where(eq(customers.id, customer.id))
+              .limit(1)
+              .all()[0];
+            tx.update(customers)
+              .set({ balance: (custRow?.balance ?? 0) + remaining })
+              .where(eq(customers.id, customer.id))
+              .run();
+          }
         }
+      });
+    } catch (err) {
+      if (err instanceof Error && err.message === "INSUFFICIENT_STOCK") {
+        return { ok: false as const, error: "المخزون المتاح غير كافٍ لأحد الأصناف" };
       }
-
-      if (customer) {
-        tx.insert(payments)
-          .values({
-            id: `pay_${randomUUID().slice(0, 8)}`,
-            entityType: "customer",
-            entityId: customer.id,
-            saleId,
-            amount: paidAmount,
-            paymentType: input.paymentType,
-            notes: null,
-            userId: input.userId,
-          })
-          .run();
-        const remaining = total - paidAmount;
-        if (remaining > 0) {
-          const custRow = tx
-            .select({ balance: customers.balance })
-            .from(customers)
-            .where(eq(customers.id, customer.id))
-            .limit(1)
-            .all()[0];
-          tx.update(customers)
-            .set({ balance: (custRow?.balance ?? 0) + remaining })
-            .where(eq(customers.id, customer.id))
-            .run();
-        }
+      if (
+        attempt < 2 &&
+        err instanceof Error &&
+        err.message.includes("UNIQUE constraint failed: sales.invoice_number")
+      ) {
+        continue;
       }
-    });
-  } catch (err) {
-    if (err instanceof Error && err.message === "INSUFFICIENT_STOCK") {
-      return { ok: false as const, error: "المخزون المتاح غير كافٍ لأحد الأصناف" };
+      throw err;
     }
-    throw err;
+    break;
   }
 
   await logAudit({
