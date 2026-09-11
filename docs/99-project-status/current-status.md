@@ -12,9 +12,8 @@ All 15 phases complete. Project accepted — maintenance mode.
 cashier pages, invoice-number hardening — implemented and verified
 (107 unit, 33 e2e).
 
-**Customization track (client-approved):** company/invoice settings, returns +
-cashier pages, invoice-number hardening — implemented and verified
-(107 unit, 33 e2e).
+**Part A close-out:** backlog reconciled, risks retired, requirements traced
+(REQ-SET-002 currency gap fixed).
 
 ## Status Summary
 
